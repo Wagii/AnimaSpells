@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stylesheets/MainMenu.uss?fileID=7433441132597879392&amp;guid=0c9663c7f81d76246be282584d7b967f&amp;type=3#MainMenu" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(255, 255, 255);">
+        <ui:VisualElement style="flex-grow: 0; height: 10%; background-color: rgb(178, 178, 178); flex-direction: row-reverse; align-items: center; justify-content: flex-start; padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; gap: 8px;">
+            <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]" style="flex-shrink: 1; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px;" />
+            <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]" style="flex-shrink: 1; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px; align-self: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="width: 140px; background-color: rgb(209, 209, 209);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

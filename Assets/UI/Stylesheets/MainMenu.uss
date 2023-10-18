@@ -1,0 +1,7 @@
+.unity-popup-field {
+  height: 100%;
+}
+
+.unity-popup-field>.unity-label {
+  -unity-text-align: middle-right;
+}

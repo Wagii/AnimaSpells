@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Data.Scripts
 {
@@ -8,7 +7,5 @@ namespace Data.Scripts
     {
         public string name;
         public SpellPath[] paths;
-
-        public MagicLibrary() { }
     }
 }

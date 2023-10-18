@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Data.Scripts
 {
@@ -11,6 +12,7 @@ namespace Data.Scripts
         public string[] opposedPaths;
         public string description;
         public Color pathColor;
+        public Image pathImage;
         public Spell[] spells;
     }
 }

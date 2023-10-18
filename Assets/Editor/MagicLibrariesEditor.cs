@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Data.Scripts;
 using Scriptables;
 using UnityEditor;
@@ -10,8 +13,6 @@ namespace Editor
     public class MagicLibrariesEditor : UnityEditor.Editor
     {
         private MagicLibraries m_magicLibraries;
-        private TextAsset m_defaultPaths;
-        private TextAsset m_customPaths;
 
         private void OnEnable()
         {
@@ -22,18 +23,31 @@ namespace Editor
         {
             base.OnInspectorGUI();
             EditorGUILayout.Separator();
-            m_defaultPaths = (TextAsset) EditorGUILayout.ObjectField("Default Paths", m_defaultPaths, typeof(TextAsset), false);
-            m_customPaths = (TextAsset) EditorGUILayout.ObjectField("Custom Paths", m_customPaths, typeof(TextAsset), false);
             if (GUILayout.Button("Update"))
             {
-                if (m_defaultPaths != null)
+                List<MagicLibrary> l_magicLibraries = new List<MagicLibrary>();
+                string[] l_assets = AssetDatabase.FindAssets("t:TextAsset")
+                    .Select(AssetDatabase.GUIDToAssetPath)
+                    .Where(p_path => p_path.Contains("Assets/"))
+                    .Where(p_path => Path.GetExtension(p_path).Contains("json"))
+                    .ToArray();
+
+                foreach (string l_asset in l_assets)
                 {
-                    m_magicLibraries.m_defaultPaths = JsonUtility.FromJson<MagicLibrary>(m_defaultPaths.text);
+                    try
+                    {
+                        string l_text = File.ReadAllText(l_asset);
+                        MagicLibrary l_magicLibrary = JsonUtility.FromJson<MagicLibrary>(l_text);
+                        l_magicLibraries.Add(l_magicLibrary);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Error while loading {l_asset}: {e.Message}");
+                    }
                 }
-                if (m_customPaths != null)
-                {
-                    m_magicLibraries.m_customPaths = JsonUtility.FromJson<MagicLibrary>(m_customPaths.text);
-                }
+
+                m_magicLibraries.m_magicPaths = l_magicLibraries.ToArray();
+                AssetDatabase.SaveAssets();
             }
         }
     }
