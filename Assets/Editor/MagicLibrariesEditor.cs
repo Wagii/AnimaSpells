@@ -49,6 +49,20 @@ namespace Editor
                 m_magicLibraries.m_magicPaths = l_magicLibraries.ToArray();
                 AssetDatabase.SaveAssets();
             }
+
+            if (GUILayout.Button("Reset player prefs"))
+            {
+                PathSelection l_pathSelection = new PathSelection();
+                l_pathSelection.m_pathSelection = new bool[m_magicLibraries.m_magicPaths.Length][];
+                for (int i = 0; i < l_pathSelection.m_pathSelection.Length; i++)
+                    l_pathSelection.m_pathSelection[i] = new bool[m_magicLibraries.m_magicPaths[i].paths.Length];
+
+                foreach (bool[] l_path in l_pathSelection.m_pathSelection)
+                    for (int l_index = 0; l_index < l_path.Length; l_index++)
+                        l_path[l_index] = true;
+
+                PlayerPrefs.SetString("path_selection", l_pathSelection.ToString());
+            }
         }
     }
 }
