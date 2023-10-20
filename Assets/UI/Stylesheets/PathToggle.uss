@@ -1,0 +1,31 @@
+.unity-toggle {
+}
+
+.unity-toggle .unity-toggle__input {
+    flex-grow: 1;
+    background-color: white;
+}
+
+.unity-toggle .unity-toggle__input:checked {
+    background-color: gainsboro;
+}
+
+.unity-toggle .unity-toggle__input .unity-toggle__checkmark {
+    flex-grow: 1;
+    align-self: auto;
+    width: auto;
+    height: auto;
+    align-items: auto;
+    background-color: initial;
+    background-image: none;
+    -unity-background-image-tint-color: initial;
+    border-width: initial;
+}
+
+.path-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}

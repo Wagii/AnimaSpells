@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -232,6 +233,28 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 56f5941fecd4f874b914995dc20ce5fa, type: 3}
   m_SortingOrder: 0
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3fbe181145bfc54e806192ebd38e573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_uiDocument: {fileID: 519420033}
+  m_magicLibraries: {fileID: 11400000, guid: ef2c1793080972640a2dc411e0612843, type: 2}
+  m_pathDisplayAsset: {fileID: 9197481963319205126, guid: 23c4b1b2de41a7446b8763674f5734ef, type: 3}
+  m_spellDisplayAssetNew: {fileID: 0}
+  m_spellDisplayAssetOld: {fileID: 0}
+  m_pathInfoWindowAsset: {fileID: 0}
+  m_spellInfoNewSystemWindowAsset: {fileID: 0}
+  m_spellInfoOldSystemWindowAsset: {fileID: 0}
+  m_spellLevelInfoWindowAsset: {fileID: 0}
+  m_holdTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

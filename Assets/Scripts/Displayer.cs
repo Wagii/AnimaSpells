@@ -153,12 +153,17 @@ public class Displayer : MonoBehaviour
     private VisualElement m_root;
     private readonly Dictionary<MagicLibrary, PathDisplay[]> m_pathDisplays = new Dictionary<MagicLibrary, PathDisplay[]>();
     private PathSelection m_pathSelection;
+    private VisualElement m_pathInfoWindow;
+    private VisualElement m_spellInfoNewSystemWindow;
+    private VisualElement m_spellInfoOldSystemWindow;
+    private VisualElement m_spellLevelInfoWindow;
 
     private int m_selectedLibrary;
     private int m_selectedSystem;
 
     private void Start()
     {
+        return;
         m_root = m_uiDocument.rootVisualElement;
 
         m_pathSelection = PathSelection.LoadSelection();
@@ -197,7 +202,11 @@ public class Displayer : MonoBehaviour
                 // Path display generation
                 VisualElement l_pathElement = m_pathDisplayAsset.CloneTree();
                 Toggle l_pathToggle = l_pathElement.Q<Toggle>();
-                VisualElement l_pathIcon = l_pathElement.Q("icon");
+                l_pathToggle.style.borderLeftColor = new StyleColor(l_spellPath.pathColor);
+                l_pathToggle.style.borderRightColor = new StyleColor(l_spellPath.pathColor);
+                l_pathToggle.style.borderTopColor = new StyleColor(l_spellPath.pathColor);
+                l_pathToggle.style.borderBottomColor = new StyleColor(l_spellPath.pathColor);
+                VisualElement l_pathIcon = l_pathElement.Q("path-icon");
                 l_pathIcon.style.backgroundImage = new StyleBackground(l_spellPath.pathImage.sprite);
                 m_pathScrollView.Add(l_pathElement);
 
