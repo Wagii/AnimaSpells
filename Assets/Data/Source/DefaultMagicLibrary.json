@@ -32485,7 +32485,7 @@
         "Terre",
         "Illusion"
       ],
-      "description": "Cette voie secondaire contrôle le principe qui donne la vie aux êtres organiques, celui du sang lui-même. Limites: Bien sûr, les êtres sans circulation sanguine comme les élémentaires, les âmes ou les golems inorganiques sont immunisés contre les sorts de cette voie secondaire.",
+      "description": "Cette voie secondaire contrôle le principe qui donne la vie aux êtres organiques, celui du sang lui-même.\n\n<b>Limites: </b>Bien sûr, les êtres sans circulation sanguine comme les élémentaires, les âmes ou les golems inorganiques sont immunisés contre les sorts de cette voie secondaire.",
       "pathColor": {
         "r": 0.0,
         "g": 0.0,
@@ -33044,7 +33044,7 @@
         "Destruction",
         "Eau",
         "Feu",
-        "Terre."
+        "Terre"
       ],
       "description": "Songes est la voie de magie secondaire qui contrôle le monde onirique des rêveurs, ainsi que son reflet dans la Veille.",
       "pathColor": {

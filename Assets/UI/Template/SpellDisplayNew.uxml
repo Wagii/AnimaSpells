@@ -1,0 +1,53 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stylesheets/SpellDisplay.uss?fileID=7433441132597879392&amp;guid=b4af4b5404abb6e428aed6cb34bf72f6&amp;type=3#SpellDisplay" />
+    <ui:ScrollView style="flex-grow: 0; background-color: rgb(255, 255, 255); border-left-color: rgb(255, 177, 177); border-right-color: rgb(255, 177, 177); border-top-color: rgb(255, 177, 177); border-bottom-color: rgb(255, 177, 177); border-top-width: 8px; border-right-width: 8px; border-bottom-width: 8px; border-left-width: 8px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; min-width: auto; min-height: auto;">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spell-name" style="-unity-font-style: bold; font-size: 14px;" />
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Niveau :" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+                <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spell-level" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Action :" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+                <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spell-actions" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <ui:Label tabindex="-1" text="&lt;b&gt;Effet : &lt;/b&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spell-effect" style="-unity-font-style: normal; flex-shrink: 1; flex-grow: 1; flex-wrap: wrap; white-space: normal;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="spell-ranks" style="flex-grow: 0; flex-shrink: 1; flex-direction: row; flex-wrap: wrap; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; justify-content: center;">
+            <ui:Button name="spell-base" class="spell-rank">
+                <ui:Label tabindex="-1" text="Base" parse-escape-sequences="true" display-tooltip-when-elided="true" class="spell-title" style="background-color: rgb(96, 103, 191);" />
+                <ui:VisualElement>
+                    <ui:Label name="spell-rank-header" tabindex="-1" text="Int : 6 / 60 zéon&#10;Maintien : 10 Quotidien" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                    <ui:Label name="spell-rank-value" text="160 RMys" />
+                </ui:VisualElement>
+            </ui:Button>
+            <ui:Button name="spell-intermediate" class="spell-rank">
+                <ui:Label tabindex="-1" text="Intermédiaire" parse-escape-sequences="true" display-tooltip-when-elided="true" class="spell-title" style="background-color: rgb(96, 191, 101);" />
+                <ui:VisualElement>
+                    <ui:Label name="spell-rank-header" tabindex="-1" text="Int : 6 / 60 zéon&#10;Maintien : 10 Quotidien" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                    <ui:Label name="spell-rank-value" text="160 RMys" />
+                </ui:VisualElement>
+            </ui:Button>
+            <ui:Button name="spell-advanced" class="spell-rank">
+                <ui:Label tabindex="-1" text="Avancé" parse-escape-sequences="true" display-tooltip-when-elided="true" class="spell-title" style="background-color: rgb(191, 156, 96);" />
+                <ui:VisualElement>
+                    <ui:Label name="spell-rank-header" tabindex="-1" text="Int : 6 / 60 zéon&#10;Maintien : 10 Quotidien" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                    <ui:Label name="spell-rank-value" text="160 RMys" />
+                </ui:VisualElement>
+            </ui:Button>
+            <ui:Button name="spell-arcane" class="spell-rank">
+                <ui:Label tabindex="-1" text="Arcane" parse-escape-sequences="true" display-tooltip-when-elided="true" class="spell-title" style="background-color: rgb(191, 96, 103);" />
+                <ui:VisualElement>
+                    <ui:Label name="spell-rank-header" tabindex="-1" text="Int : 6 / 60 zéon&#10;Maintien : 10 Quotidien" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                    <ui:Label name="spell-rank-value" text="160 RMys" />
+                </ui:VisualElement>
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Label tabindex="-1" text="Type de sort :" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold;" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="spell-types" style="flex-grow: 1; white-space: normal;" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

@@ -14,5 +14,13 @@ namespace Data.Scripts
         public Color pathColor;
         public Image pathImage;
         public Spell[] spells;
+
+        private SpellPath[] m_opposedPath;
+
+        public SpellPath[] OpposedPath
+        {
+            get => m_opposedPath;
+            set => m_opposedPath = value;
+        }
     }
 }

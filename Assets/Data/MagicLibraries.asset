@@ -35251,7 +35251,7 @@ MonoBehaviour:
       - Destruction
       - Eau
       - Feu
-      - Terre.
+      - Terre
       description: "Songes est la voie de magie secondaire qui contr\xF4le le monde
         onirique des r\xEAveurs, ainsi que son reflet dans la Veille."
       pathColor: {r: 0, g: 0, b: 0, a: 0}
@@ -69483,7 +69483,7 @@ MonoBehaviour:
     - name: Destin
       pathType: 2
       opposedPaths:
-      - "T\xE9n\xE8bres"
+      - "Obscurit\xE9"
       - "Cr\xE9ation"
       - Destruction
       - Air

@@ -50,6 +50,25 @@ namespace Editor
                 AssetDatabase.SaveAssets();
             }
 
+            if (GUILayout.Button("Fill path references"))
+            {
+                foreach (MagicLibrary l_magicLibrary in m_magicLibraries.m_magicPaths)
+                {
+                    Dictionary<string, SpellPath> l_spellPaths = l_magicLibrary.paths.ToDictionary(p_spellPath => p_spellPath.name, p_spellPath => p_spellPath);
+                    foreach (SpellPath l_spellPath in l_magicLibrary.paths)
+                    {
+                        Debug.Log($"{l_magicLibrary.name} - {l_spellPath.name}\n{string.Join(", ", l_spellPath.opposedPaths)}");
+                        l_spellPath.OpposedPath = l_spellPath.opposedPaths.Select(p_path => l_spellPaths[p_path]).ToArray();
+
+                        foreach (Spell l_spell in l_spellPath.spells)
+                        {
+                            l_spell.PathReference = l_spellPath;
+                            l_spell.ForbiddenPaths = l_spellPath.opposedPaths.Select(p_path => l_spellPaths[p_path]).ToArray();
+                        }
+                    }
+                }
+            }
+
             if (GUILayout.Button("Reset player prefs"))
             {
                 PathSelection l_pathSelection = new PathSelection();

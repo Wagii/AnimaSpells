@@ -251,9 +251,9 @@ MonoBehaviour:
   m_spellDisplayAssetNew: {fileID: 0}
   m_spellDisplayAssetOld: {fileID: 0}
   m_pathInfoWindowAsset: {fileID: 0}
-  m_spellInfoNewSystemWindowAsset: {fileID: 0}
-  m_spellInfoOldSystemWindowAsset: {fileID: 0}
-  m_spellLevelInfoWindowAsset: {fileID: 0}
+  m_spellInfoNewSystemWindowAsset: {fileID: 9197481963319205126, guid: cca4d82e3870fe548a95a9858f17e32f, type: 3}
+  m_spellInfoOldSystemWindowAsset: {fileID: 9197481963319205126, guid: efeba14152a022d40bf4155e5804668a, type: 3}
+  m_spellLevelInfoWindowAsset: {fileID: 9197481963319205126, guid: 18afc22037533aa4aa843b5b6b1b704f, type: 3}
   m_holdTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
