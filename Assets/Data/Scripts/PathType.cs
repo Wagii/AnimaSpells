@@ -2,8 +2,8 @@
 {
     public enum PathType
     {
-        Majeure,
-        Mineure,
+        Majeur,
+        Mineur,
         Secondaire,
         Libre
     }

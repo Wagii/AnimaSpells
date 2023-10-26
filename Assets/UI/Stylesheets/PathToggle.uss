@@ -3,11 +3,10 @@
 
 .unity-toggle .unity-toggle__input {
     flex-grow: 1;
-    background-color: white;
 }
 
 .unity-toggle .unity-toggle__input:checked {
-    background-color: gainsboro;
+    background-color: rgba(0, 0, 0, 0.33);
 }
 
 .unity-toggle .unity-toggle__input .unity-toggle__checkmark {

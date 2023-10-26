@@ -1,0 +1,15 @@
+Label {
+    font-size: 11;
+    color: white;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin: 1 0 0 0;
+    padding: 0 2 1 2;
+}
+
+.spellTitle {
+    font-size: 12;
+    letter-spacing: 1px;
+    -unity-text-outline-width: 0.5px;
+    -unity-text-outline-color: rgb(255, 255, 255);
+}
