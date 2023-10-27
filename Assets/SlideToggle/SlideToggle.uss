@@ -1,0 +1,86 @@
+.slide-toggle {
+    border-color: gainsboro;
+    border-right-width: 2px;
+}
+
+.slide-toggle>Label {
+    flex-shrink: 1;
+    flex-grow: 0;
+    min-width: 32px;
+}
+
+.slide-toggle__input {
+    flex-shrink: 1;
+    flex-grow: 0;
+    min-width: 32px;
+    background-color: rgb(126, 126, 126);
+    border-radius: 8px;
+    overflow: visible;
+    border-width: 1px;
+    border-color: rgb(100, 100, 100);
+    max-height: 16px;
+    margin-top: 10px;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    min-height: 16px;
+}
+
+.slide-toggle__input-knob {
+    height: 16px;
+    width: 16px;
+    background-color: rgb(240, 240, 240);
+    position: absolute;
+    border-radius: 25px;
+    top: -1px;
+    transition-property: translate, background-color;
+    transition-duration: 0.5s, 0.5s;
+    translate: -1px 0;
+    border-width: 1px;
+    border-color: rgb(100, 100, 100);
+}
+
+.slide-toggle__input--checked {
+    background-color: rgb(0, 156, 10);
+}
+
+.slide-toggle__input--checked > .slide-toggle__input-knob {
+    translate: 16px 0;
+}
+
+.slide-toggle:focus .slide-toggle__input-knob {
+    border-width: 1px;
+    border-color: rgb(0, 106, 166);
+}
+
+.slide-toggle__label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    flex-grow: 1;
+    flex-direction: row-reverse;
+}
+
+.slide-toggle__label--checked {
+    flex-direction: row;
+}
+
+.slide-toggle__label-inner {
+    flex-grow: 1;
+    margin: 0;
+    padding-right: 0;
+    max-width: 50%;
+    color: white;
+    display: none;
+    font-size: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1px;
+}
+
+.slide-toggle__label-inner--checked {
+    display: flex;
+    font-size: 10px;
+    padding-right: 1px;
+}

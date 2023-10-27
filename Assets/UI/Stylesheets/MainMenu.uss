@@ -1,0 +1,11 @@
+.unity-popup-field {}
+
+.unity-popup-field .unity-popup-field__label {
+    -unity-text-align: middle-left;
+}
+
+.unity-popup-field .unity-popup-field__input {
+    flex-grow: 0;
+    flex-shrink: 1;
+    min-width: 200px;
+}

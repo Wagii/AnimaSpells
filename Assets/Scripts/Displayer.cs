@@ -5,22 +5,8 @@ using System.Linq;
 using Data.Scripts;
 using Scriptables;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Action = System.Action;
-
-[Serializable]
-public struct RankColor
-{
-    public Rank m_rank;
-    public Color m_color;
-
-    public RankColor(Color p_color, Rank p_rank)
-    {
-        m_color = p_color;
-        m_rank = p_rank;
-    }
-}
 
 public class PathSelection
 {
@@ -149,6 +135,7 @@ public class HoldManipulator : PointerManipulator
 
 public class Displayer : MonoBehaviour
 {
+    private const string SELECTED_THEME = "selected_theme";
     private const string SELECTED_LIBRARY = "selected_library";
     private const string SELECTED_SYSTEM = "selected_system";
 
@@ -172,6 +159,7 @@ public class Displayer : MonoBehaviour
     [SerializeField] private VisualTreeAsset m_spellInfoNewSystemWindowAsset;
     [SerializeField] private VisualTreeAsset m_spellInfoOldSystemWindowAsset;
     [SerializeField] private VisualTreeAsset m_spellLevelInfoWindowAsset;
+    [SerializeField] private StyleSheet m_darkTheme;
     [SerializeField] private float m_holdTime;
 
     private readonly Dictionary<MagicLibrary, PathDisplay[]> m_pathDisplays = new Dictionary<MagicLibrary, PathDisplay[]>();
@@ -186,7 +174,7 @@ public class Displayer : MonoBehaviour
     private VisualElement m_spellLevelInfoWindow;
 
     private int m_selectedLibrary;
-    private int m_selectedSystem;
+    private bool m_newSystem;
 
     private void Start()
     {
@@ -223,6 +211,17 @@ public class Displayer : MonoBehaviour
         m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
         m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
+        SlideToggle l_toggle = m_root.Q<SlideToggle>("theme-toggle");
+        l_toggle.RegisterValueChangedCallback(p_evt =>
+        {
+            if (p_evt.newValue)
+                m_root.styleSheets.Add(m_darkTheme);
+            else
+                m_root.styleSheets.Remove(m_darkTheme);
+            PlayerPrefs.SetInt(SELECTED_THEME, p_evt.newValue ? 1 : 0);
+            PlayerPrefs.Save();
+        });
+
         DropdownField l_libraries = m_root.Q<DropdownField>("dropdown-library");
         l_libraries.choices = m_magicLibraries.m_magicPaths.Select(p_library => p_library.name).ToList();
         l_libraries.RegisterValueChangedCallback(_ =>
@@ -233,11 +232,11 @@ public class Displayer : MonoBehaviour
             SelectLibrary(m_selectedLibrary);
         });
 
-        RadioButtonGroup l_systems = m_root.Q<RadioButtonGroup>("radio-system");
+        SlideToggle l_systems = m_root.Q<SlideToggle>("radio-system");
         l_systems.RegisterValueChangedCallback(p_index =>
         {
-            m_selectedSystem = p_index.newValue;
-            PlayerPrefs.SetInt(SELECTED_SYSTEM, p_index.newValue);
+            m_newSystem = p_index.newValue;
+            PlayerPrefs.SetInt(SELECTED_SYSTEM, p_index.newValue ? 1 : 0);
             PlayerPrefs.Save();
             SelectSystem(m_selectedLibrary);
         });
@@ -299,14 +298,15 @@ public class Displayer : MonoBehaviour
                     foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
                     {
                         l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(
-                            p_evt.newValue && m_selectedSystem == 0
+                            p_evt.newValue && m_newSystem
                                 ? DisplayStyle.Flex
                                 : DisplayStyle.None);
                         l_spellDisplay.m_oldSpell.style.display = new StyleEnum<DisplayStyle>(
-                            p_evt.newValue && m_selectedSystem != 0
+                            p_evt.newValue && !m_newSystem
                                 ? DisplayStyle.Flex
                                 : DisplayStyle.None);
                     }
+                    m_pathSelection.SaveSelection();
                 });
                 l_pathToggle.AddManipulator(new HoldManipulator(this, m_holdTime, () =>
                 {
@@ -322,14 +322,15 @@ public class Displayer : MonoBehaviour
         }
 
         m_selectedLibrary = PlayerPrefs.GetInt(SELECTED_LIBRARY, 0);
-        m_selectedSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 0);
+        m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
         l_libraries.index = m_selectedLibrary;
-        l_systems.value = m_selectedSystem;
+        l_systems.value = m_newSystem;
+        l_toggle.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
     }
 
     private void OnSpellClicked(Spell p_spell)
     {
-        if (m_selectedSystem == 0)
+        if (m_newSystem)
             SetupNewSpell(p_spell);
         else
             SetupOldSpell(p_spell);
@@ -496,7 +497,6 @@ public class Displayer : MonoBehaviour
 
     public void SelectLibrary(int p_libraryIndex)
     {
-        bool l_newSelected = m_selectedSystem == 0;
         MagicLibrary l_selectedLibrary = m_magicLibraries.m_magicPaths[p_libraryIndex];
         foreach (KeyValuePair<MagicLibrary,PathDisplay[]> l_keyValuePair in m_pathDisplays)
         {
@@ -509,11 +509,11 @@ public class Displayer : MonoBehaviour
                 foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
                 {
                     l_spellDisplay.m_VisualElement.style.display =
-                        new StyleEnum<DisplayStyle>(l_isSelected && l_newSelected && isOn
+                        new StyleEnum<DisplayStyle>(l_isSelected && m_newSystem && isOn
                             ? DisplayStyle.Flex
                             : DisplayStyle.None);
                     l_spellDisplay.m_oldSpell.style.display =
-                        new StyleEnum<DisplayStyle>(l_isSelected && !l_newSelected && isOn
+                        new StyleEnum<DisplayStyle>(l_isSelected && !m_newSystem && isOn
                             ? DisplayStyle.Flex
                             : DisplayStyle.None);
                 }
