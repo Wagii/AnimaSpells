@@ -3,7 +3,17 @@ guid: e3fbe181145bfc54e806192ebd38e573
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_uiDocument: {instanceID: 0}
+  - m_magicLibraries: {fileID: 11400000, guid: ef2c1793080972640a2dc411e0612843, type: 2}
+  - m_pathDisplayAsset: {fileID: 9197481963319205126, guid: 23c4b1b2de41a7446b8763674f5734ef, type: 3}
+  - m_spellDisplayAsset: {fileID: 9197481963319205126, guid: a84d7b1f0cd4c524e83dcf339b0e6459, type: 3}
+  - m_pathInfoWindowAsset: {fileID: 9197481963319205126, guid: 76cbe4b72710d244ead97a5d5de5307b, type: 3}
+  - m_spellInfoNewSystemWindowAsset: {fileID: 9197481963319205126, guid: cca4d82e3870fe548a95a9858f17e32f, type: 3}
+  - m_spellInfoOldSystemWindowAsset: {fileID: 9197481963319205126, guid: efeba14152a022d40bf4155e5804668a, type: 3}
+  - m_spellLevelInfoWindowAsset: {fileID: 9197481963319205126, guid: 18afc22037533aa4aa843b5b6b1b704f, type: 3}
+  - m_darkTheme: {fileID: 7433441132597879392, guid: b622fa3bdfa2f7244bd1ec0c88ab8326, type: 3}
+  - m_lightTheme: {fileID: 7433441132597879392, guid: 2b716880536653d4d982b52f451f7bcb, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

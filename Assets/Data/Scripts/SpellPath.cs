@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Data.Scripts
 {
-    [Serializable]
+	[Serializable]
     public class SpellPath
     {
         public string name;
@@ -12,7 +11,7 @@ namespace Data.Scripts
         public string[] opposedPaths;
         public string description;
         public Color pathColor;
-        public Image pathImage;
+        public Texture2D pathImage;
         public Spell[] spells;
 
         private SpellPath[] m_opposedPath;
