@@ -344,17 +344,29 @@ public class Displayer : MonoBehaviour
 				}));
 
 				l_pathDisplays.Add(l_pathDisplay);
-				l_pathToggle.value = m_pathSelection.m_pathSelection[l_libraryIndex][l_pathIndex];
 			}
 
 			m_pathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
 		}
+		
+		for (int libraryIndex = 0; libraryIndex < m_pathDisplays.Count; libraryIndex++)
+		{
+			PathDisplay[] pathDisplays = m_pathDisplays.ElementAt(libraryIndex).Value;
+			for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
+            {
+				PathDisplay pathDisplay = pathDisplays[pathIndex];
+				Toggle pathToggle = pathDisplay.m_pathDisplay.Q<Toggle>();
+				pathToggle.SetValueWithoutNotify(m_pathSelection.m_pathSelection[libraryIndex][pathIndex]);
+            }
+        }
 
 		m_selectedLibrary = PlayerPrefs.GetInt(SELECTED_LIBRARY, 0);
 		m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
 		l_libraries.index = m_selectedLibrary;
 		l_systems.value = m_newSystem;
 		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
+
+		ToggleAllPaths(m_pathSelection.m_pathSelection[m_selectedLibrary].All(element => element == false));
 	}
 
 	private void ToggleAllPaths(bool displayEverything)
