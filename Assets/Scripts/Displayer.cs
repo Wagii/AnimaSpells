@@ -331,17 +331,11 @@ public class Displayer : MonoBehaviour
 				int l_localPathIndex = l_pathIndex;
 				l_pathToggle.RegisterValueChangedCallback(p_evt =>
 				{
-					// TODO : toggle all paths from same library
 					m_pathSelection.m_pathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
-					bool displayEverything = m_pathSelection.m_pathSelection[l_localLibraryIndex].All(element => element == false);
-					foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
-					{
-						l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(
-							(p_evt.newValue || displayEverything)
-								? DisplayStyle.Flex
-								: DisplayStyle.None);
-					}
 					m_pathSelection.SaveSelection();
+					bool displayEverything = m_pathSelection.m_pathSelection[l_localLibraryIndex].All(element => element == false);
+					ToggleAllPaths(displayEverything);
+
 				});
 				l_pathToggle.AddManipulator(new HoldManipulator(this, m_holdTime, () =>
 				{
@@ -362,6 +356,20 @@ public class Displayer : MonoBehaviour
 		l_systems.value = m_newSystem;
 		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
 	}
+
+	private void ToggleAllPaths(bool displayEverything)
+	{
+		PathDisplay[] pathDisplays = m_pathDisplays.ElementAt(m_selectedLibrary).Value;
+		for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
+        {
+			PathDisplay pathDisplay = pathDisplays[pathIndex];
+			bool pathDisplaying = m_pathSelection.m_pathSelection[m_selectedLibrary][pathIndex];
+			for (int spellIndex = 0; spellIndex < pathDisplay.m_spellDisplays.Length; spellIndex++)
+			{
+				pathDisplay.m_spellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
+			}
+        }
+    }
 
 	private void OnSpellClicked(Spell p_spell)
 	{
