@@ -242,8 +242,8 @@ public class Displayer : MonoBehaviour
 		m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-		SlideToggle l_toggle = m_root.Q<SlideToggle>("theme-toggle");
-		l_toggle.RegisterValueChangedCallback(p_evt =>
+		SlideToggle l_theme = m_root.Q<SlideToggle>("theme-toggle");
+		l_theme.RegisterValueChangedCallback(p_evt =>
 		{
 			if (p_evt.newValue)
 			{
@@ -269,7 +269,7 @@ public class Displayer : MonoBehaviour
 			SelectLibrary(m_selectedLibrary);
 		});
 
-		SlideToggle l_systems = m_root.Q<SlideToggle>("radio-system");
+		SlideToggle l_systems = m_root.Q<SlideToggle>("system-toggle");
 		l_systems.RegisterValueChangedCallback(p_index =>
 		{
 			m_newSystem = p_index.newValue;
@@ -280,6 +280,7 @@ public class Displayer : MonoBehaviour
 		for (int l_libraryIndex = 0; l_libraryIndex < m_magicLibraries.m_magicPaths.Length; l_libraryIndex++)
 		{
 			MagicLibrary l_magicLibrary = m_magicLibraries.m_magicPaths[l_libraryIndex];
+
 			List<PathDisplay> l_pathDisplays = new();
 			for (int l_pathIndex = 0; l_pathIndex < l_magicLibrary.paths.Length; l_pathIndex++)
 			{
@@ -330,8 +331,9 @@ public class Displayer : MonoBehaviour
 				int l_localPathIndex = l_pathIndex;
 				l_pathToggle.RegisterValueChangedCallback(p_evt =>
 				{
+					// TODO : toggle all paths from same library
 					m_pathSelection.m_pathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
-					bool displayEverything = m_pathSelection.m_pathSelection.All(subArray => subArray.All(element => element == false));
+					bool displayEverything = m_pathSelection.m_pathSelection[l_localLibraryIndex].All(element => element == false);
 					foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
 					{
 						l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(
@@ -358,7 +360,7 @@ public class Displayer : MonoBehaviour
 		m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
 		l_libraries.index = m_selectedLibrary;
 		l_systems.value = m_newSystem;
-		l_toggle.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
+		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
 	}
 
 	private void OnSpellClicked(Spell p_spell)
