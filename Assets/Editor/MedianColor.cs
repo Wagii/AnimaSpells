@@ -12,7 +12,7 @@ public class MedianColor : MonoBehaviour
 }
 
 [CustomEditor(typeof(MedianColor))]
-public class MedianColorEditor : Editor
+public class MedianColorEditor : UnityEditor.Editor
 {
     public override void OnInspectorGUI()
     {

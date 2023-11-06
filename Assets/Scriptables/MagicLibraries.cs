@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data.Scripts;
 using UnityEngine;
 
@@ -7,5 +8,9 @@ namespace Scriptables
     public class MagicLibraries : ScriptableObject
     {
         public MagicLibrary[] m_magicPaths;
+
+        public PathGraphics[] m_PathGraphicsArray;
+
+        public Dictionary<string, PathGraphics> PathGraphicsMap = new Dictionary<string, PathGraphics>();
     }
 }

@@ -9,12 +9,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie permet aux sorciers de contrôler un des deux éléments supérieurs, la lumière pure. Elle contrôle les émotions positives de l’homme, comme l’amour, la tranquillité ou le plaisir. Elle offre également la maîtrise de la connaissance et de la détection. Ses pouvoirs offensifs et défensifs se révèlent très équilibrés.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Lumière",
@@ -2191,12 +2185,6 @@
         "Nécromancie"
       ],
       "description": "L’obscurité n’est pas seulement l’absence de lumière, il s’agit de la réelle maîtrise du pur pouvoir des ténèbres. Elle offre le contrôle de toutes les émotions négatives comme la peur, la haine ou la colère. Elle correspond au pouvoir des secrets, parmi lesquels on compte les sorts de dissimulation. Son pouvoir martial est également assez équilibré.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Obscurité",
@@ -4373,12 +4361,6 @@
         "Nécromancie"
       ],
       "description": "Le pouvoir de la création est la capacité magique à composer et altérer la réalité qui entoure les sorciers. Ses sorts concernent le changement, la guérison et la création de choses. C’est une magie principalement défensive.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Création mineure",
@@ -6550,12 +6532,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie permet d’utiliser le pouvoir du flux des âmes pour détruire la réalité elle-même. Ses sorts affectent autant le monde matériel que spirituel. Son pouvoir est, par nature, très offensif.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Fragilité",
@@ -8727,12 +8703,6 @@
         "Nécromancie"
       ],
       "description": "La première des quatre voies élémentaires mineures contrôle les hautes températures. Ses sorts se basent sur la chaleur, le feu et peuvent englober de vastes superficies. Elle accueille aussi les sorts de sacrifice, permettant de consumer certains aspects d’un individu pour en améliorer d’autres. C’est une voie très offensive.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Feu",
@@ -10369,12 +10339,6 @@
         "Nécromancie"
       ],
       "description": "L’élément de l’eau accueille de nombreux principes différents. Cette voie contrôle les liquides et la pureté des choses. Elle représente aussi le pouvoir du gel et des basses températures. En combat, c’est une magie très équilibrée, à la fois offensive et défensive.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Source",
@@ -12008,12 +11972,6 @@
         "Nécromancie"
       ],
       "description": "La terre est le pouvoir de la planète, de la pierre et des minéraux. Il s’agit de la magie la plus matérielle de toutes, contrôlant les lois de la physique, comme la gravité ou le magnétisme. Son influence sur les esprits et les choses immatérielles est très limitée. Les sorts de terre sont liés à la résistance, la solidité et la lenteur.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Détecter Minéraux",
@@ -13646,12 +13604,6 @@
         "Nécromancie"
       ],
       "description": "Il s’agit de la voie des choses éthérées et intangibles. Elle comporte les sorts de vitesse, de vol et de mouvement. Son pouvoir permet d’altérer l’espace et de transporter les corps d’un lieu à l’autre. Cette voie contrôle aussi les perturbations atmosphériques et donc le climat et l’électricité.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer du vent",
@@ -15288,12 +15240,6 @@
         "Nécromancie"
       ],
       "description": "L’essence contrôle la vie et les âmes. Cette voie contrôle également les esprits et les être naturels de ce monde. C’est enfin la voie de la nature et des sortilèges druidiques.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Affinité Naturelle",
@@ -16925,12 +16871,6 @@
         "Nécromancie"
       ],
       "description": "Le pouvoir de cette voie permet à un sorcier de contrôler la mystification et l’illusion Ses sorts peuvent altérer la réalité et, avec elle, la perception des gens.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Illusion Sonore",
@@ -18571,12 +18511,6 @@
         "Illusion"
       ],
       "description": "La nécromancie est une perversion de la magie en tant que telle. Alors que les autres voies se nourrissent de l’énergie qui s’échappe du flux des âmes, la Nécromancie l’y arrache littéralement. Ses sorts détruisent l’essence de la vie, étouffant et pervertissant les âmes qu’elle utilise. Son pouvoir permet de rendre la vie aux morts, de détruire les âmes, de drainer les vies et l’essence d’autres êtres.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir la Mort",
@@ -20745,12 +20679,6 @@
       "pathType": 3,
       "opposedPaths": [],
       "description": "Les sorts d'acces libre sont des sorts génériques que tout sorcier peut apprendre, peu importe les voies qu'il a choisi. Lorsqu'un sorcier apprend une voie, il peut choisir parmis ces sorts pour compléter sa voie et la rendre unique.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Nœud",
@@ -27438,12 +27366,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie manie le principe absolu du chaos, le pouvoir de l'imprédictible et l'altération des événements.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir le Chaos",
@@ -28001,12 +27923,6 @@
         "Illusion"
       ],
       "description": "Les sorciers de la guerre sont ceux qui maîtrisent les champs de bataille à volonté, pouvant renforcer selon leurs souhaits les compétences de leurs alliés ou même d'armées entières.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Moral",
@@ -28562,12 +28478,6 @@
         "Nécromancie"
       ],
       "description": "Literae est la magie des mots, la voie de la modification de la réalité en écrivant des annotations en marge du livre que nous appelons la réalité. Ceux qui l’emploient sont capables d'utiliser la sorcellerie pour réécrire le scénario de la vie en l'adaptant à leurs besoins.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Plumes de la Réalité",
@@ -29124,12 +29034,6 @@
         "Illusion"
       ],
       "description": "Cette voie secondaire contrôle la fin des choses, la mort dans son concept fin de la vie.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Autopsie",
@@ -29686,12 +29590,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie secondaire regroupe tous les pouvoirs en relation avec la musique les mélodies. Les sorciers qui utilisent ses sorts sont habituellement appelés mages musiciens, car c'est au travers de leurs mélodies qu'ils sont capables de provoquer les effets et les merveilles les plus invraisemblables.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Tempo",
@@ -30246,12 +30144,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie secondaire regroupe tous les principes en relation avec l'apparence, la position sociale et la supériorité sur les autres. C'est la magie dont usent la noblesse et les grands seigneurs pour assurer leur domination sur les autres.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Visage",
@@ -30807,12 +30699,6 @@
         "Nécromancie"
       ],
       "description": "C'est la voie qui incarne l'harmonie et l'absence de conflits.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Bouclier Salvateur",
@@ -31367,12 +31253,6 @@
         "Illusion"
       ],
       "description": "Cette voie secondaire est la plus obscure et la plus retorse de toutes, car elle regroupe tous les pouvoirs en relation avec les émotions négatives, le péché et plus globalement le mal à l'état pur. C'est la magie utilisée par la grande majorité des créatures infernales, ainsi que par les adorateurs des divinités maléfiques de chaque culture.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Ressentir le Péché",
@@ -31926,12 +31806,6 @@
         "Illusion"
       ],
       "description": "Connaissance est, une voie secondaire primordiale qui domine le concept même du savoir. Les sorciers qui l'utilisent ont la maîtrise sur tout ce qui peut être appris.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Catégoriser",
@@ -32486,12 +32360,6 @@
         "Illusion"
       ],
       "description": "Cette voie secondaire contrôle le principe qui donne la vie aux êtres organiques, celui du sang lui-même.\n\n<b>Limites: </b>Bien sûr, les êtres sans circulation sanguine comme les élémentaires, les âmes ou les golems inorganiques sont immunisés contre les sorts de cette voie secondaire.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Ralentissement du Pouls",
@@ -33047,12 +32915,6 @@
         "Terre"
       ],
       "description": "Songes est la voie de magie secondaire qui contrôle le monde onirique des rêveurs, ainsi que son reflet dans la Veille.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir les Songes",
@@ -33609,12 +33471,6 @@
         "Nécromancie"
       ],
       "description": "Pour beaucoup d'occultistes le principe qui contrôle cette voie secondaire est le plus grand de tous, y compris parmi ceux des voies majeures. Ceux qui l'utilisent sont appelés les Chronomants, ou mages du temps, et leurs capacités consistent à utiliser la magie pour contrôler le passage du temps comme s'il s'agissait simplement d'un élément de plus.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Connaissance du Temps",
@@ -34169,12 +34025,6 @@
         "Essence"
       ],
       "description": "La peur et la folie sont les émotions les plus sombres, primaires et puissantes, antérieures même aux temps où les hommes ont pris conscience de leur destin. Cette voie secondaire à ces deux concepts comme base, c'est la magie des horreurs primitives qui sont au-delà des ténèbres elles-mêmes.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Les Yeux de l'Autre Côté",
@@ -34730,12 +34580,6 @@
         "Illusion"
       ],
       "description": "Vide est la voie secondaire qui contrôle les énergies du néant, l'absence totale de toute matière physique ou spirituelle.",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "L'Ombre du Vide",

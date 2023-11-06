@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Data.Scripts
 {
@@ -10,8 +9,6 @@ namespace Data.Scripts
         public PathType pathType;
         public string[] opposedPaths;
         public string description;
-        public Color pathColor;
-        public Texture2D pathImage;
         public Spell[] spells;
 
         private SpellPath[] m_opposedPath;

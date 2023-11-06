@@ -10,13 +10,6 @@
         "Mana"
       ],
       "description": "Cette voie permet aux sorciers de contrôler un des deux éléments supérieurs, la lumière pure. Elle contrôle les émotions positives de l’homme, comme l’amour, la tranquillité ou le plaisir. Elle offre également la maîtrise de la connaissance et de la détection. Ses pouvoirs offensifs et défensifs se révèlent très équilibrés.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Lumière",
@@ -2194,13 +2187,6 @@
         "Mana"
       ],
       "description": "L’obscurité n’est pas seulement l’absence de lumière, il s’agit de la réelle maîtrise du pur pouvoir des ténèbres. Elle offre le contrôle de toutes les émotions négatives comme la peur, la haine ou la colère. Elle correspond au pouvoir des secrets, parmi lesquels on compte les sorts de dissimulation. Son pouvoir martial est également assez équilibré.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Obscurité",
@@ -4378,13 +4364,6 @@
         "Mana"
       ],
       "description": "Le pouvoir de la création est la capacité magique à composer et altérer la réalité qui entoure les sorciers. Ses sorts concernent le changement, la guérison et la création de choses. C’est une magie principalement défensive.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Création mineure",
@@ -6557,13 +6536,6 @@
         "Mana"
       ],
       "description": "Cette voie permet d’utiliser le pouvoir du flux des âmes pour détruire la réalité elle-même. Ses sorts affectent autant le monde matériel que spirituel. Son pouvoir est, par nature, très offensif.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Fragilité",
@@ -8736,13 +8708,6 @@
         "Mana"
       ],
       "description": "La première des quatre voies élémentaires mineures contrôle les hautes températures. Ses sorts se basent sur la chaleur, le feu et peuvent englober de vastes superficies. Elle accueille aussi les sorts de sacrifice, permettant de consumer certains aspects d’un individu pour en améliorer d’autres. C’est une voie très offensive.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer Feu",
@@ -10380,13 +10345,6 @@
         "Mana"
       ],
       "description": "L’élément de l’eau accueille de nombreux principes différents. Cette voie contrôle les liquides et la pureté des choses. Elle représente aussi le pouvoir du gel et des basses températures. En combat, c’est une magie très équilibrée, à la fois offensive et défensive.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Source",
@@ -12021,13 +11979,6 @@
         "Mana"
       ],
       "description": "La terre est le pouvoir de la planète, de la pierre et des minéraux. Il s’agit de la magie la plus matérielle de toutes, contrôlant les lois de la physique, comme la gravité ou le magnétisme. Son influence sur les esprits et les choses immatérielles est très limitée. Les sorts de terre sont liés à la résistance, la solidité et la lenteur.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Détecter Minéraux",
@@ -13661,13 +13612,6 @@
         "Mana"
       ],
       "description": "Il s’agit de la voie des choses éthérées et intangibles. Elle comporte les sorts de vitesse, de vol et de mouvement. Son pouvoir permet d’altérer l’espace et de transporter les corps d’un lieu à l’autre. Cette voie contrôle aussi les perturbations atmosphériques et donc le climat et l’électricité.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Créer du vent",
@@ -15305,13 +15249,6 @@
         "Mana"
       ],
       "description": "L’essence contrôle la vie et les âmes. Cette voie contrôle également les esprits et les être naturels de ce monde. C’est enfin la voie de la nature et des sortilèges druidiques.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Affinité Naturelle",
@@ -16944,13 +16881,6 @@
         "Mana"
       ],
       "description": "Le pouvoir de cette voie permet à un sorcier de contrôler la mystification et l’illusion Ses sorts peuvent altérer la réalité et, avec elle, la perception des gens.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Illusion Sonore",
@@ -18592,13 +18522,6 @@
         "Mana"
       ],
       "description": "La nécromancie est une perversion de la magie en tant que telle. Alors que les autres voies se nourrissent de l’énergie qui s’échappe du flux des âmes, la Nécromancie l’y arrache littéralement. Ses sorts détruisent l’essence de la vie, étouffant et pervertissant les âmes qu’elle utilise. Son pouvoir permet de rendre la vie aux morts, de détruire les âmes, de drainer les vies et l’essence d’autres êtres.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir la Mort",
@@ -20779,13 +20702,6 @@
         "Nécromancie"
       ],
       "description": "Les mages élitistes de la voie du Mana refusent d’utiliser la magie autrement que de la manière la plus pure qu’elle soit, par la maîtrise du zéon comme ressource et objectif. Les sorts de la voie du Mana sont les sorts ayant le plus d’effet sur la Magie en elle-même. Les adeptes de la Voie du Mana sont probablement les sorciers pouvant causer le plus de changement dans le monde éthéré.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Analyse Magique",
@@ -22418,13 +22334,6 @@
       "pathType": 3,
       "opposedPaths": [],
       "description": "Les sorts d'acces libre sont des sorts génériques que tout sorcier peut apprendre, peu importe les voies qu'il a choisi. Lorsqu'un sorcier apprend une voie, il peut choisir parmis ces sorts pour compléter sa voie et la rendre unique.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Nœud",
@@ -29112,13 +29021,6 @@
         "Nécromancie"
       ],
       "description": "Cette voie manie le principe absolu du chaos, le pouvoir de l'imprédictible et l'altération des événements.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir le Chaos",
@@ -29676,13 +29578,6 @@
         "Nécromancie"
       ],
       "description": "Des sorciers se concentrant sur la magie du destin s'appellent les Devins. Ces êtres étranges profitent de moments de méditation pour s’approprier des messages envoyés du nexus des âmes au travers de l’utilisation de leur magie. Les mages du destin sont les seuls êtres capables de traduire les augures du destin et de comprendre, influencer et parfois maîtriser le concept étrange qu’est la Gnose et le futur. La voie du destin permet donc de modifier le présent et le futur par une utilisation habile des reflets du nexus.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Aperçu",
@@ -30240,13 +30135,6 @@
         "Mana"
       ],
       "description": "Les sorciers de la guerre sont ceux qui maîtrisent les champs de bataille à volonté, pouvant renforcer selon leurs souhaits les compétences de leurs alliés ou même d'armées entières.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Moral",
@@ -30803,13 +30691,6 @@
         "Mana"
       ],
       "description": "Literae est la magie des mots, la voie de la modification de la réalité en écrivant des annotations en marge du livre que nous appelons la réalité. Ceux qui l’emploient sont capables d'utiliser la sorcellerie pour réécrire le scénario de la vie en l'adaptant à leurs besoins.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Plumes de la Réalité",
@@ -31367,13 +31248,6 @@
         "Mana"
       ],
       "description": "Cette voie secondaire contrôle la fin des choses, la mort dans son concept fin de la vie.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Autopsie",
@@ -31931,13 +31805,6 @@
         "Mana"
       ],
       "description": "Cette voie secondaire regroupe tous les pouvoirs en relation avec la musique les mélodies. Les sorciers qui utilisent ses sorts sont habituellement appelés mages musiciens, car c'est au travers de leurs mélodies qu'ils sont capables de provoquer les effets et les merveilles les plus invraisemblables.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Tempo",
@@ -32493,13 +32360,6 @@
         "Mana"
       ],
       "description": "Cette voie secondaire regroupe tous les principes en relation avec l'apparence, la position sociale et la supériorité sur les autres. C'est la magie dont usent la noblesse et les grands seigneurs pour assurer leur domination sur les autres.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Visage",
@@ -33056,13 +32916,6 @@
         "Mana"
       ],
       "description": "C'est la voie qui incarne l'harmonie et l'absence de conflits.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Bouclier Salvateur",
@@ -33618,13 +33471,6 @@
         "Mana"
       ],
       "description": "Cette voie secondaire est la plus obscure et la plus retorse de toutes, car elle regroupe tous les pouvoirs en relation avec les émotions négatives, le péché et plus globalement le mal à l'état pur. C'est la magie utilisée par la grande majorité des créatures infernales, ainsi que par les adorateurs des divinités maléfiques de chaque culture.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Ressentir le Péché",
@@ -34180,13 +34026,6 @@
         "Mana"
       ],
       "description": "La plus détestable des voies se concentre sur la maîtrise et la génération d’éléments biologiques pouvant perturber le fonctionnement du corps de ses cibles. En infectant le corps de sa cible un mage de la Peste est capable de modifier son comportement, pouvant le soigner ou le détruire de l’intérieur. Un mage de la Peste assez puissant peut même amener une pandémie mondiale.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Diagnostique",
@@ -34740,13 +34579,6 @@
         "Illusion"
       ],
       "description": "Connaissance est, une voie secondaire primordiale qui domine le concept même du savoir. Les sorciers qui l'utilisent ont la maîtrise sur tout ce qui peut être appris.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Catégoriser",
@@ -35302,13 +35134,6 @@
         "Mana"
       ],
       "description": "Cette voie secondaire contrôle le principe qui donne la vie aux êtres organiques, celui du sang lui-même. Limites: Bien sûr, les êtres sans circulation sanguine comme les élémentaires, les âmes ou les golems inorganiques sont immunisés contre les sorts de cette voie secondaire.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Ralentissement du Pouls",
@@ -35865,13 +35690,6 @@
         "Mana"
       ],
       "description": "Songes est la voie de magie secondaire qui contrôle le monde onirique des rêveurs, ainsi que son reflet dans la Veille.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Sentir les Songes",
@@ -36429,13 +36247,6 @@
         "Mana"
       ],
       "description": "Pour beaucoup d'occultistes le principe qui contrôle cette voie secondaire est le plus grand de tous, y compris parmi ceux des voies majeures. Ceux qui l'utilisent sont appelés les Chronomants, ou mages du temps, et leurs capacités consistent à utiliser la magie pour contrôler le passage du temps comme s'il s'agissait simplement d'un élément de plus.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Connaissance du Temps",
@@ -36991,13 +36802,6 @@
         "Essence"
       ],
       "description": "La magie de la dimension se focalise sur la compréhension de l’espace et le contrôle de celui-ci. En pliant l’espace un mage de la dimension est capable de relier temporairement des emplacements très espacés ou même de transformer une zone en espace non euclidien.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Ressentir les fluctuations",
@@ -37557,13 +37361,6 @@
         "Mana"
       ],
       "description": "La peur et la folie sont les émotions les plus sombres, primaires et puissantes, antérieures même aux temps où les hommes ont pris conscience de leur destin. Cette voie secondaire à ces deux concepts comme base, c'est la magie des horreurs primitives qui sont au-delà des ténèbres elles-mêmes.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "Les Yeux de l'Autre Côté",
@@ -38119,13 +37916,6 @@
         "Illusion"
       ],
       "description": "Vide est la voie secondaire qui contrôle les énergies du néant, l'absence totale de toute matière physique ou spirituelle.",
-      "iconPath": "",
-      "pathColor": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
-        "a": 0.0
-      },
       "spells": [
         {
           "name": "L'Ombre du Vide",

@@ -57,7 +57,6 @@ namespace Data.Scripts
 
         public string name;
         public string pathReference;
-        public PathType pathReferenceType;
         public string[] forbiddenPaths;
         public int level;
         public Action action;
@@ -66,18 +65,11 @@ namespace Data.Scripts
         public OldSystem oldSystem;
 
         private SpellPath m_pathReference;
-        private SpellPath[] m_forbiddenPaths;
 
         public SpellPath PathReference
         {
             get => m_pathReference;
             set => m_pathReference = value;
-        }
-
-        public SpellPath[] ForbiddenPaths
-        {
-            get => m_forbiddenPaths;
-            set => m_forbiddenPaths = value;
         }
     }
 }
