@@ -77947,92 +77947,92 @@ MonoBehaviour:
           maintainType: 1
   m_PathGraphicsArray:
   - pathReference: "Lumi\xE8re"
-    color: {r: 0.6156863, g: 0.6156863, b: 0.6156863, a: 1}
+    color: {r: 0.72208995, g: 0.72208995, b: 0.72208995, a: 1}
     texture2D: {fileID: 2800000, guid: 58b6877ef61a5054d9a663e86b19f875, type: 3}
   - pathReference: "Obscurit\xE9"
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.4221524, g: 0.09008562, b: 0.6174746, a: 1}
+    texture2D: {fileID: 2800000, guid: 65007f1e820a637428fb7be3abeab24f, type: 3}
   - pathReference: "Cr\xE9ation"
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 1.6198497, g: 0.93275654, b: 0.38118753, a: 1}
+    texture2D: {fileID: 2800000, guid: e83f32d70f13b2646b3a9000965a4e42, type: 3}
   - pathReference: Destruction
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.16211456, g: 0.16211456, b: 0.16211456, a: 1}
+    texture2D: {fileID: 2800000, guid: 58e2ef0d7e67d3d4da78307265da15e2, type: 3}
   - pathReference: Feu
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.5859245, g: 0, b: 0, a: 1}
+    texture2D: {fileID: 2800000, guid: b1579f32aab10514eacc6b8bf70770d4, type: 3}
   - pathReference: Eau
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.3776562, b: 0.9018536, a: 1}
+    texture2D: {fileID: 2800000, guid: e9bc181e9e6488844bddea15afc2da53, type: 3}
   - pathReference: Terre
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.53240913, g: 0.3440987, b: 0.16512896, a: 1}
+    texture2D: {fileID: 2800000, guid: 2925023666f84ee49b77c16e60f396d0, type: 3}
   - pathReference: Air
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.5058883, b: 0.173799, a: 1}
+    texture2D: {fileID: 2800000, guid: 82bc7afcb8bbacc41b86fde322f5ab09, type: 3}
   - pathReference: Essence
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.10845665, g: 0.82109165, b: 0.25805125, a: 1}
+    texture2D: {fileID: 2800000, guid: 12c6399b5b5cb0442ae3711b10883724, type: 3}
   - pathReference: Illusion
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.5697524, b: 0.5253261, a: 1}
+    texture2D: {fileID: 2800000, guid: adcaabaaf8272bd4e953a3ded1dc9309, type: 3}
   - pathReference: "N\xE9cromancie"
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.17180145, g: 0.17180145, b: 0.17180145, a: 1}
+    texture2D: {fileID: 2800000, guid: 8552d3be92f464842a9198cb51598d43, type: 3}
   - pathReference: "Acc\xE8s Libre"
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.53654045, g: 0.021079455, b: 0, a: 1}
+    texture2D: {fileID: 2800000, guid: 3fe6a9a88fde75243bceb183aff0f047, type: 3}
   - pathReference: Chaos
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 1.5406548, g: 0.262033, b: 0.13840966, a: 1}
+    texture2D: {fileID: 2800000, guid: abf92007f42c0874e93af161a795f86f, type: 3}
   - pathReference: Guerre
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    texture2D: {fileID: 2800000, guid: 8c67298a5eaf94f4b9c83786d19ebf98, type: 3}
   - pathReference: Literae
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.7807862, g: 0, b: 0, a: 1}
+    texture2D: {fileID: 2800000, guid: f03063db1c94be5478b03186e661ab75, type: 3}
   - pathReference: Mort
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.16892385, g: 0.16892385, b: 0.16892385, a: 1}
+    texture2D: {fileID: 2800000, guid: 7096e242fef2e35448316b1dad1c1d28, type: 3}
   - pathReference: Musique
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.24457537, b: 0.52655584, a: 1}
+    texture2D: {fileID: 2800000, guid: 89402e0d879e1df4c9116032457ddd2b, type: 3}
   - pathReference: Noblesse
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.8686622, g: 0.05310224, b: 0.07239426, a: 1}
+    texture2D: {fileID: 2800000, guid: 913b03e6ece8b8f43ac3dcbc6cdcbfd5, type: 3}
   - pathReference: Paix
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.83526915, g: 0.83526915, b: 0.83526915, a: 1}
+    texture2D: {fileID: 2800000, guid: 33271c05d17a69c4e901e84890d8b60b, type: 3}
   - pathReference: "P\xE9ch\xE9"
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.47840798, g: 0.06902086, b: 0.3404262, a: 1}
+    texture2D: {fileID: 2800000, guid: 0926aee56ffb3fc46ae53a6036301113, type: 3}
   - pathReference: Connaissance
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.8930631, g: 0.4564446, b: 0.046458647, a: 1}
+    texture2D: {fileID: 2800000, guid: 51285eb30471e4f4b9110e5321a9b527, type: 3}
   - pathReference: Sang
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 1.3781208, g: 0.17062816, b: 0.33061537, a: 1}
+    texture2D: {fileID: 2800000, guid: 8dfed3f48f3c443499bb966f02173dc4, type: 3}
   - pathReference: Songes
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.5963291, b: 0.9275447, a: 1}
+    texture2D: {fileID: 2800000, guid: 5b4775ad1add6154da6530e61afd63d4, type: 3}
   - pathReference: Temps
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0, g: 0.96058315, b: 0.6818038, a: 1}
+    texture2D: {fileID: 2800000, guid: dedf915edc8ba27459a01569c0e9752e, type: 3}
   - pathReference: Seuil
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.48627105, g: 0.3338511, b: 1.0417851, a: 1}
+    texture2D: {fileID: 2800000, guid: 1898172bcbb37d44baefdbd305d2a35d, type: 3}
   - pathReference: Vide
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.8719406, g: 0, b: 0.2765444, a: 1}
+    texture2D: {fileID: 2800000, guid: 35585b697bcc16f4b9e7ee9ea73085db, type: 3}
   - pathReference: Mana
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.69461095, g: 0.9518545, b: 0.9840474, a: 1}
+    texture2D: {fileID: 2800000, guid: c61e5d7a4cc41bd4e8fa3675d1fbd594, type: 3}
   - pathReference: Destin
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.71774, g: 0.921073, b: 0.7816096, a: 1}
+    texture2D: {fileID: 2800000, guid: 1fe8fa81a0531aa4283d214b9f09ef2c, type: 3}
   - pathReference: Peste
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.32797343, g: 0.45659462, b: 0.26923275, a: 1}
+    texture2D: {fileID: 2800000, guid: c1d159636bf6f8c40b247dace2940d7a, type: 3}
   - pathReference: Dimension
-    color: {r: 0, g: 0, b: 0, a: 0}
-    texture2D: {fileID: 0}
+    color: {r: 0.64250976, g: 0.52671176, b: 0.77816164, a: 1}
+    texture2D: {fileID: 2800000, guid: b336d30ff972cd5419f8a799249d46e7, type: 3}
