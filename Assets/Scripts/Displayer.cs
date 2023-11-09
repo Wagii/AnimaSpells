@@ -10,16 +10,18 @@ using Action = System.Action;
 
 public class PathSelection
 {
-	public bool[][] m_pathSelection;
+	public bool[][] m_PathSelection;
+
+	public readonly string m_saveKey = "path_selection";
 
 	public override string ToString()
 	{
 		string l_string = "";
-		for (int l_index = 0; l_index < m_pathSelection.Length; l_index++)
+		for (int l_index = 0; l_index < m_PathSelection.Length; l_index++)
 		{
-			bool[] l_bools = m_pathSelection[l_index];
+			bool[] l_bools = m_PathSelection[l_index];
 			l_string += string.Join(",", l_bools.Select(p_bool => p_bool ? "1" : "0"));
-			if (l_index != m_pathSelection.Length - 1)
+			if (l_index != m_PathSelection.Length - 1)
 				l_string += "|";
 		}
 
@@ -28,37 +30,38 @@ public class PathSelection
 
 	public PathSelection() {}
 
-	public PathSelection(string p_string)
+	public PathSelection(string p_string, string p_saveKey = "path_selection")
 	{
 		string[] l_lines = p_string.Split('|');
-		m_pathSelection = new bool[l_lines.Length][];
+		m_PathSelection = new bool[l_lines.Length][];
 		for (int l_index = 0; l_index < l_lines.Length; l_index++)
 		{
 			string l_line = l_lines[l_index];
 			string[] l_bools = l_line.Split(',');
-			m_pathSelection[l_index] = new bool[l_bools.Length];
+			m_PathSelection[l_index] = new bool[l_bools.Length];
 			for (int l_boolIndex = 0; l_boolIndex < l_bools.Length; l_boolIndex++)
 			{
 				string l_bool = l_bools[l_boolIndex];
-				m_pathSelection[l_index][l_boolIndex] = l_bool == "1";
+				m_PathSelection[l_index][l_boolIndex] = l_bool == "1";
 			}
 		}
+		m_saveKey = p_saveKey;
 	}
 
 	public void SaveSelection()
 	{
-		PlayerPrefs.SetString("path_selection", ToString());
+		PlayerPrefs.SetString(m_saveKey, ToString());
 		PlayerPrefs.Save();
 	}
 
-	public static PathSelection LoadSelection()
+	public static PathSelection LoadSelection(string p_saveKey = "path_selection")
 	{
-		if (!PlayerPrefs.HasKey("path_selection") || PlayerPrefs.GetString("path_selection", "") == "")
-			GenerateDefaultPathSelection();
-		return new PathSelection(PlayerPrefs.GetString("path_selection", ""));
+		if (!PlayerPrefs.HasKey(p_saveKey) || PlayerPrefs.GetString(p_saveKey, "") == "")
+			GenerateDefaultPathSelection(p_saveKey);
+		return new PathSelection(PlayerPrefs.GetString(p_saveKey, ""), p_saveKey);
 	}
 
-	public static void GenerateDefaultPathSelection()
+	public static void GenerateDefaultPathSelection(string p_saveKey)
 	{
 		if (Displayer.instance == null || Displayer.MagicLibraries == null) return;
 
@@ -66,11 +69,11 @@ public class PathSelection
 		PathSelection pathSelection = new PathSelection();
 
 		int libraryCount = magicLibraries.m_magicPaths.Length;
-		pathSelection.m_pathSelection = new bool[libraryCount][];
+		pathSelection.m_PathSelection = new bool[libraryCount][];
 		for (int i = 0; i < libraryCount; i++)
-			pathSelection.m_pathSelection[i] = new bool[magicLibraries.m_magicPaths[i].paths.Length];
+			pathSelection.m_PathSelection[i] = new bool[magicLibraries.m_magicPaths[i].paths.Length];
 
-		PlayerPrefs.SetString("path_selection", pathSelection.ToString());
+		PlayerPrefs.SetString(p_saveKey, pathSelection.ToString());
 	}
 }
 
@@ -151,6 +154,8 @@ public class HoldManipulator : PointerManipulator
 
 public class Displayer : MonoBehaviour
 {
+	public const string BOOK_SELECTION = "book_selection";
+	private const string SELECTED_BOOK = "selected_book";
 	private const string SELECTED_THEME = "selected_theme";
 	private const string SELECTED_LIBRARY = "selected_library";
 	private const string SELECTED_SYSTEM = "selected_system";
@@ -182,18 +187,20 @@ public class Displayer : MonoBehaviour
 	[SerializeField] private StyleSheet m_lightTheme;
 	[SerializeField] private float m_holdTime;
 
-	private static readonly Dictionary<MagicLibrary, PathDisplay[]> m_pathDisplays = new Dictionary<MagicLibrary, PathDisplay[]>();
-	private static VisualElement m_root;
-	private static ScrollView m_pathScrollView;
-	private static ScrollView m_spellScrollView;
-	private static PathSelection m_pathSelection;
-	private static VisualElement m_infoWindowHolder;
-	private static VisualElement m_pathInfoWindow;
-	private static VisualElement m_spellInfoNewSystemWindow;
-	private static VisualElement m_spellInfoOldSystemWindow;
-	private static VisualElement m_spellLevelInfoWindow;
+	private static readonly Dictionary<MagicLibrary, PathDisplay[]> PathDisplays = new Dictionary<MagicLibrary, PathDisplay[]>();
+	private static VisualElement s_root;
+	private static ScrollView s_pathScrollView;
+	private static ScrollView s_spellScrollView;
+	private static PathSelection s_pathSelection;
+	private static VisualElement s_infoWindowHolder;
+	private static VisualElement s_pathInfoWindow;
+	private static VisualElement s_spellInfoNewSystemWindow;
+	private static VisualElement s_spellInfoOldSystemWindow;
+	private static VisualElement s_spellLevelInfoWindow;
 
+	private PathSelection m_bookStyleSelection;
 	private int m_selectedLibrary;
+	private bool m_displayingBookStyle;
 	private bool m_newSystem;
 
 	private void Awake()
@@ -214,56 +221,104 @@ public class Displayer : MonoBehaviour
 			m_magicLibraries.PathGraphicsMap.TryAdd(l_pathGraphics.pathReference, l_pathGraphics);
 
 		// return;
-		m_root = m_uiDocument.rootVisualElement;
+		s_root = m_uiDocument.rootVisualElement;
 
-		m_pathSelection = PathSelection.LoadSelection();
+		s_pathSelection = PathSelection.LoadSelection();
+		m_bookStyleSelection = PathSelection.LoadSelection(BOOK_SELECTION);
 
-		m_pathScrollView = m_root.Q<ScrollView>("path-view");
-		m_spellScrollView = m_root.Q<ScrollView>("spell-view");
-		m_infoWindowHolder = m_root.Q<VisualElement>("info-window-holder");
+		s_root.Q<ScrollView>("path-view");
+		s_pathScrollView = s_root.Q<ScrollView>("path-view");
+		s_spellScrollView = s_root.Q<ScrollView>("spell-view");
+		s_infoWindowHolder = s_root.Q<VisualElement>("info-window-holder");
 
-		m_pathInfoWindow = m_pathInfoWindowAsset.CloneTree();
-		m_spellInfoNewSystemWindow = m_spellInfoNewSystemWindowAsset.CloneTree();
-		m_spellInfoOldSystemWindow = m_spellInfoOldSystemWindowAsset.CloneTree();
-		m_spellLevelInfoWindow = m_spellLevelInfoWindowAsset.CloneTree();
+		s_pathInfoWindow = m_pathInfoWindowAsset.CloneTree()[0];
+		s_spellInfoNewSystemWindow = m_spellInfoNewSystemWindowAsset.CloneTree()[0];
+		s_spellInfoOldSystemWindow = m_spellInfoOldSystemWindowAsset.CloneTree()[0];
+		s_spellLevelInfoWindow = m_spellLevelInfoWindowAsset.CloneTree()[0];
 
-		m_infoWindowHolder.Add(m_pathInfoWindow);
-		m_infoWindowHolder.Add(m_spellInfoNewSystemWindow);
-		m_infoWindowHolder.Add(m_spellInfoOldSystemWindow);
-		m_infoWindowHolder.Add(m_spellLevelInfoWindow);
+		s_infoWindowHolder.Add(s_pathInfoWindow);
+		s_infoWindowHolder.Add(s_spellInfoNewSystemWindow);
+		s_infoWindowHolder.Add(s_spellInfoOldSystemWindow);
+		s_infoWindowHolder.Add(s_spellLevelInfoWindow);
 
-		Button l_prevButton = m_spellLevelInfoWindow.Q<Button>("prev-button");
-		l_prevButton.clickable.clicked += () => m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		l_prevButton = m_spellInfoNewSystemWindow.Q<Button>("prev-button");
-		l_prevButton.clickable.clicked += () => m_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		l_prevButton = m_spellInfoOldSystemWindow.Q<Button>("prev-button");
-		l_prevButton.clickable.clicked += () => m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		l_prevButton = m_pathInfoWindow.Q<Button>("prev-button");
-		l_prevButton.clickable.clicked += () => m_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		Button l_prevButton = s_spellLevelInfoWindow.Q<Button>("prev-button");
+		l_prevButton.clickable.clicked += () => s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		l_prevButton = s_spellInfoNewSystemWindow.Q<Button>("prev-button");
+		l_prevButton.clickable.clicked += () => s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		l_prevButton = s_spellInfoOldSystemWindow.Q<Button>("prev-button");
+		l_prevButton.clickable.clicked += () => s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		l_prevButton = s_pathInfoWindow.Q<Button>("prev-button");
+		l_prevButton.clickable.clicked += () => s_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-		m_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		m_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		s_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-		SlideToggle l_theme = m_root.Q<SlideToggle>("theme-toggle");
+		SlideToggle l_bookMode = s_root.Q<SlideToggle>("book-toggle");
+		l_bookMode.RegisterValueChangedCallback(p_evt =>
+		{
+			m_displayingBookStyle = p_evt.newValue;
+			if (m_displayingBookStyle)
+			{
+				s_pathSelection = new PathSelection(m_bookStyleSelection.ToString());
+				for (int i = 0; i < PathDisplays.Count; i++)
+				{
+					PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
+					for (int j = 0; j < l_pathDisplays.Length; j++)
+					{
+						Toggle l_toggle = l_pathDisplays[j].m_pathDisplay.Q<Toggle>();
+						l_toggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[i][j]);
+					}
+				}
+				ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
+			}
+			else
+			{
+				m_bookStyleSelection = new PathSelection(s_pathSelection.ToString(), BOOK_SELECTION);
+				for (int i = 0; i < PathDisplays.Count; i++)
+				{
+					PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
+					bool l_firstSelected = false;
+					for (int j = 0; j < l_pathDisplays.Length; j++)
+					{
+						Toggle l_toggle = l_pathDisplays[j].m_pathDisplay.Q<Toggle>();
+						if (s_pathSelection.m_PathSelection[i][j] && !l_firstSelected)
+						{
+							l_firstSelected = true;
+						}
+						else
+						{
+							l_toggle.SetValueWithoutNotify(false);
+							s_pathSelection.m_PathSelection[i][j] = false;
+						}
+					}
+				}
+			}
+			PlayerPrefs.SetString(BOOK_SELECTION, m_bookStyleSelection.ToString());
+			PlayerPrefs.SetString("path_selection", s_pathSelection.ToString());
+			PlayerPrefs.SetInt(SELECTED_BOOK, m_displayingBookStyle ? 1 : 0);
+			PlayerPrefs.Save();
+		});
+
+		SlideToggle l_theme = s_root.Q<SlideToggle>("theme-toggle");
 		l_theme.RegisterValueChangedCallback(p_evt =>
 		{
 			if (p_evt.newValue)
 			{
-				m_root.styleSheets.Remove(m_lightTheme);
-				m_root.styleSheets.Add(m_darkTheme);
+				s_root.styleSheets.Remove(m_lightTheme);
+				s_root.styleSheets.Add(m_darkTheme);
 			}
 			else
 			{
-				m_root.styleSheets.Remove(m_darkTheme);
-				m_root.styleSheets.Add(m_lightTheme);
+				s_root.styleSheets.Remove(m_darkTheme);
+				s_root.styleSheets.Add(m_lightTheme);
 			}
 			PlayerPrefs.SetInt(SELECTED_THEME, p_evt.newValue ? 1 : 0);
 			PlayerPrefs.Save();
 		});
 
-		DropdownField l_libraries = m_root.Q<DropdownField>("dropdown-library");
+		DropdownField l_libraries = s_root.Q<DropdownField>("dropdown-library");
 		l_libraries.choices = m_magicLibraries.m_magicPaths.Select(p_library => p_library.name).ToList();
 		l_libraries.RegisterValueChangedCallback(_ =>
 		{
@@ -273,7 +328,7 @@ public class Displayer : MonoBehaviour
 			SelectLibrary(m_selectedLibrary);
 		});
 
-		SlideToggle l_systems = m_root.Q<SlideToggle>("system-toggle");
+		SlideToggle l_systems = s_root.Q<SlideToggle>("system-toggle");
 		l_systems.RegisterValueChangedCallback(p_index =>
 		{
 			m_newSystem = p_index.newValue;
@@ -290,12 +345,11 @@ public class Displayer : MonoBehaviour
 			{
 				SpellPath l_spellPath = l_magicLibrary.paths[l_pathIndex];
 				PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[l_spellPath.name];
-				Color.RGBToHSV(l_pathGraphics.color, out float h, out float s, out float v);
 
 				PathDisplay l_pathDisplay = new() { m_path = l_spellPath };
 
 				// Path display generation
-				VisualElement l_pathElement = m_pathDisplayAsset.CloneTree();
+				VisualElement l_pathElement = m_pathDisplayAsset.CloneTree()[0];
 				Toggle l_pathToggle = l_pathElement.Q<Toggle>();
 				l_pathToggle.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
 				l_pathToggle.style.borderRightColor = new StyleColor(l_pathGraphics.color);
@@ -303,7 +357,8 @@ public class Displayer : MonoBehaviour
 				l_pathToggle.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
 				VisualElement l_pathIcon = l_pathElement.Q("path-icon");
 				l_pathIcon.style.backgroundImage = new StyleBackground(l_pathGraphics.texture2D);
-				m_pathScrollView.Add(l_pathElement);
+
+				s_pathScrollView.Add(l_pathElement);
 
 				l_pathDisplay.m_pathDisplay = l_pathElement;
 
@@ -311,7 +366,7 @@ public class Displayer : MonoBehaviour
 				foreach (Spell l_spell in l_spellPath.spells)
 				{
 					// Spell display generation
-					VisualElement l_spellDisplayAsset = m_spellDisplayAsset.CloneTree();
+					VisualElement l_spellDisplayAsset = m_spellDisplayAsset.CloneTree()[0];
 					VisualElement l_spellInfoButton = l_spellDisplayAsset.Q<Button>();
 
 					// Spell display setup
@@ -327,7 +382,7 @@ public class Displayer : MonoBehaviour
 
 					l_spellInfoButton.Q<Button>().clickable.clicked += () => OnSpellClicked(l_spell);
 
-					m_spellScrollView.Add(l_spellDisplayAsset);
+					s_spellScrollView.Add(l_spellDisplayAsset);
 					l_spellDisplays.Add(new SpellDisplay { m_spell = l_spell, m_VisualElement = l_spellDisplayAsset });
 				}
 
@@ -339,11 +394,20 @@ public class Displayer : MonoBehaviour
 				int l_localPathIndex = l_pathIndex;
 				l_pathToggle.RegisterValueChangedCallback(p_evt =>
 				{
-					m_pathSelection.m_pathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
-					m_pathSelection.SaveSelection();
-					bool displayEverything = m_pathSelection.m_pathSelection[l_localLibraryIndex].All(p_element => p_element == false);
+					if (p_evt.newValue && !m_displayingBookStyle)
+					{
+						PathDisplay[] l_displays = PathDisplays.ElementAt(l_localLibraryIndex).Value;
+						for (int i = 0; i < s_pathSelection.m_PathSelection[l_localLibraryIndex].Length; i++)
+						{
+							if (i == l_localPathIndex) continue;
+							s_pathSelection.m_PathSelection[l_localLibraryIndex][i] = false;
+							l_displays[i].m_pathDisplay.Q<Toggle>().SetValueWithoutNotify(false);
+						}
+					}
+					s_pathSelection.m_PathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
+					s_pathSelection.SaveSelection();
+					bool displayEverything = s_pathSelection.m_PathSelection[l_localLibraryIndex].All(p_element => p_element == false);
 					ToggleAllPaths(displayEverything);
-
 				});
 				l_pathToggle.AddManipulator(new HoldManipulator(this, m_holdTime, () =>
 				{
@@ -353,39 +417,41 @@ public class Displayer : MonoBehaviour
 				l_pathDisplays.Add(l_pathDisplay);
 			}
 
-			m_pathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
+			PathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
 		}
 
-		for (int libraryIndex = 0; libraryIndex < m_pathDisplays.Count; libraryIndex++)
+		for (int libraryIndex = 0; libraryIndex < PathDisplays.Count; libraryIndex++)
 		{
-			PathDisplay[] pathDisplays = m_pathDisplays.ElementAt(libraryIndex).Value;
+			PathDisplay[] pathDisplays = PathDisplays.ElementAt(libraryIndex).Value;
 			for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
             {
 				PathDisplay pathDisplay = pathDisplays[pathIndex];
 				Toggle pathToggle = pathDisplay.m_pathDisplay.Q<Toggle>();
-				pathToggle.SetValueWithoutNotify(m_pathSelection.m_pathSelection[libraryIndex][pathIndex]);
+				pathToggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[libraryIndex][pathIndex]);
             }
         }
 
+		m_displayingBookStyle = PlayerPrefs.GetInt(SELECTED_BOOK, 0) == 1;
 		m_selectedLibrary = PlayerPrefs.GetInt(SELECTED_LIBRARY, 0);
 		m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
+		l_bookMode.value = m_displayingBookStyle;
+		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
 		l_libraries.index = m_selectedLibrary;
 		l_systems.value = m_newSystem;
-		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
 
-		ToggleAllPaths(m_pathSelection.m_pathSelection[m_selectedLibrary].All(element => element == false));
+		ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
 	}
 
-	private void ToggleAllPaths(bool displayEverything)
+	private void ToggleAllPaths(bool p_displayEverything)
 	{
-		PathDisplay[] pathDisplays = m_pathDisplays.ElementAt(m_selectedLibrary).Value;
+		PathDisplay[] pathDisplays = PathDisplays.ElementAt(m_selectedLibrary).Value;
 		for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
         {
 			PathDisplay pathDisplay = pathDisplays[pathIndex];
-			bool pathDisplaying = m_pathSelection.m_pathSelection[m_selectedLibrary][pathIndex];
+			bool pathDisplaying = s_pathSelection.m_PathSelection[m_selectedLibrary][pathIndex];
 			for (int spellIndex = 0; spellIndex < pathDisplay.m_spellDisplays.Length; spellIndex++)
 			{
-				pathDisplay.m_spellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
+				pathDisplay.m_spellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(p_displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
 			}
         }
     }
@@ -401,9 +467,8 @@ public class Displayer : MonoBehaviour
 	private void SetupNewSpell(Spell p_spell)
 	{
 		PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[p_spell.pathReference];
-		m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
-		ScrollView l_spellDisplayNew = m_spellLevelInfoWindow.Q<ScrollView>("holder");
+		ScrollView l_spellDisplayNew = s_spellInfoNewSystemWindow.Q<ScrollView>("holder");
 
 		l_spellDisplayNew.style.borderTopColor = new StyleColor(l_pathGraphics.color);
 		l_spellDisplayNew.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
@@ -431,7 +496,7 @@ public class Displayer : MonoBehaviour
 		Button l_button = l_visualElement.Q<Button>("spell-base");
 		Label l_rankHeader = l_button.Q<Label>("spell-rank-header");
 		l_rankHeader.text = $"Int : {p_spell.newSystem.initial.requiredInt} / {p_spell.newSystem.initial.cost} zéon" +
-							$"{p_spell.newSystem.initial.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.initial.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.initial.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n";
+							$"{p_spell.newSystem.initial.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.initial.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.initial.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}";
 		Label l_rankValue = l_button.Q<Label>("spell-rank-value");
 		l_rankValue.text = p_spell.newSystem.initial.effectValues;
 		l_button.clickable.clicked += () => OnSpellRankClicked(p_spell, Rank.Initial);
@@ -439,7 +504,7 @@ public class Displayer : MonoBehaviour
 		l_button = l_visualElement.Q<Button>("spell-intermediate");
 		l_rankHeader = l_button.Q<Label>("spell-rank-header");
 		l_rankHeader.text = $"Int : {p_spell.newSystem.intermediaire.requiredInt} / {p_spell.newSystem.intermediaire.cost} zéon" +
-							$"{p_spell.newSystem.intermediaire.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n";
+							$"{p_spell.newSystem.intermediaire.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}";
 		l_rankValue = l_button.Q<Label>("spell-rank-value");
 		l_rankValue.text = p_spell.newSystem.intermediaire.effectValues;
 		l_button.clickable.clicked += () => OnSpellRankClicked(p_spell, Rank.Intermédiaire);
@@ -447,7 +512,7 @@ public class Displayer : MonoBehaviour
 		l_button = l_visualElement.Q<Button>("spell-advanced");
 		l_rankHeader = l_button.Q<Label>("spell-rank-header");
 		l_rankHeader.text = $"Int : {p_spell.newSystem.avance.requiredInt} / {p_spell.newSystem.avance.cost} zéon" +
-							$"{p_spell.newSystem.avance.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.avance.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.avance.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n";
+							$"{p_spell.newSystem.avance.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.avance.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.avance.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}";
 		l_rankValue = l_button.Q<Label>("spell-rank-value");
 		l_rankValue.text = p_spell.newSystem.avance.effectValues;
 		l_button.clickable.clicked += () => OnSpellRankClicked(p_spell, Rank.Avancé);
@@ -456,7 +521,7 @@ public class Displayer : MonoBehaviour
 		l_button = l_visualElement.Q<Button>("spell-arcane");
 		l_rankHeader = l_button.Q<Label>("spell-rank-header");
 		l_rankHeader.text = $"Int : {p_spell.newSystem.arcane.requiredInt} / {p_spell.newSystem.arcane.cost} zéon" +
-							$"{p_spell.newSystem.arcane.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.arcane.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.arcane.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n";
+							$"{p_spell.newSystem.arcane.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.arcane.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.arcane.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}";
 		l_rankValue = l_button.Q<Label>("spell-rank-value");
 		l_rankValue.text = p_spell.newSystem.arcane.effectValues;
 		l_button.clickable.clicked += () => OnSpellRankClicked(p_spell, Rank.Arcane);
@@ -464,26 +529,27 @@ public class Displayer : MonoBehaviour
 
 		l_label = l_spellDisplayNew.Q<Label>("spell-types");
 		l_label.text = string.Join(", ", p_spell.spellTypes.Select(p_spellType => p_spellType.ToString()));
+
+		s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 	}
 
 	private void OnSpellRankClicked(Spell p_spell, Rank p_rank)
 	{
-		m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
-		Label l_title = m_spellLevelInfoWindow.Q<Label>("spell-title");
+		s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+		Label l_title = s_spellLevelInfoWindow.Q<Label>("spell-title");
+		l_title.style.backgroundColor = new StyleColor(m_rankColors[p_rank]/255f);
 		l_title.text = p_rank.ToString();
-		l_title.style.backgroundColor = new StyleColor(m_rankColors[p_rank]);
 
-		Label l_label = m_spellLevelInfoWindow.Q<Label>("spell-rank-header");
+		Label l_label = s_spellLevelInfoWindow.Q<Label>("spell-metas");
 		l_label.text = p_rank switch
 		{
-			Rank.Initial => $"Int : {p_spell.newSystem.initial.requiredInt} / {p_spell.newSystem.initial.cost} zéon{p_spell.newSystem.initial.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.initial.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.initial.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n",
-			Rank.Intermédiaire => $"Int : {p_spell.newSystem.intermediaire.requiredInt} / {p_spell.newSystem.intermediaire.cost} zéon{p_spell.newSystem.intermediaire.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n",
-			Rank.Avancé => $"Int : {p_spell.newSystem.avance.requiredInt} / {p_spell.newSystem.avance.cost} zéon{p_spell.newSystem.avance.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.avance.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.avance.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n",
-			Rank.Arcane => $"Int : {p_spell.newSystem.arcane.requiredInt} / {p_spell.newSystem.arcane.cost} zéon{p_spell.newSystem.arcane.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.arcane.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.arcane.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}\n",
-			_ => throw new ArgumentOutOfRangeException(nameof(p_rank), p_rank, null)
+			Rank.Initial => $"Int : {p_spell.newSystem.initial.requiredInt} / {p_spell.newSystem.initial.cost} zéon{p_spell.newSystem.initial.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.initial.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.initial.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}",
+			Rank.Intermédiaire => $"Int : {p_spell.newSystem.intermediaire.requiredInt} / {p_spell.newSystem.intermediaire.cost} zéon{p_spell.newSystem.intermediaire.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.intermediaire.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}",
+			Rank.Avancé => $"Int : {p_spell.newSystem.avance.requiredInt} / {p_spell.newSystem.avance.cost} zéon{p_spell.newSystem.avance.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.avance.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.avance.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}",
+			Rank.Arcane => $"Int : {p_spell.newSystem.arcane.requiredInt} / {p_spell.newSystem.arcane.cost} zéon{p_spell.newSystem.arcane.maintainType switch {MaintainType.Non => "", MaintainType.Round => $"\nMaintien : {p_spell.newSystem.arcane.maintain}", MaintainType.Daily => $"\nMaintien : {p_spell.newSystem.arcane.maintain} Quotidien", MaintainType.ImiterUnSort => "Comme le sort imité", _ => throw new ArgumentOutOfRangeException()}}",
 		};
 
-		l_label = m_spellLevelInfoWindow.Q<Label>("spell-rank-value");
+		l_label = s_spellLevelInfoWindow.Q<Label>("spell-value");
 		l_label.text = p_rank switch
 		{
 			Rank.Initial => p_spell.newSystem.initial.effectValues,
@@ -497,9 +563,9 @@ public class Displayer : MonoBehaviour
 	private void SetupOldSpell(Spell p_spell)
 	{
 		PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[p_spell.pathReference];
-		m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+		s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
-		ScrollView l_spellDisplayOld = m_spellInfoOldSystemWindow.Q<ScrollView>("holder");
+		ScrollView l_spellDisplayOld = s_spellInfoOldSystemWindow.Q<ScrollView>("holder");
 
 		l_spellDisplayOld.style.borderTopColor = new StyleColor(l_pathGraphics.color);
 		l_spellDisplayOld.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
@@ -540,41 +606,54 @@ public class Displayer : MonoBehaviour
 
 		l_label = l_spellDisplayOld.Q<Label>("spell-types");
 		l_label.text = string.Join(", ", p_spell.spellTypes.Select(p_spellType => p_spellType.ToString()));
+
+		l_label = l_spellDisplayOld.Q<Label>("spell-forbidden");
+		l_label.style.display = new StyleEnum<DisplayStyle>(p_spell.forbiddenPaths.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+		l_label.text = $"<b>Voies Fermées : </b>{string.Join(", ", p_spell.forbiddenPaths)}";
 	}
 
 	private void DisplayPathInfos(PathDisplay p_pathDisplay)
 	{
-		m_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+		s_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+		PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[p_pathDisplay.m_path.name];
+
+		ScrollView l_pathDisplay = s_pathInfoWindow.Q<ScrollView>("holder");
+		l_pathDisplay.style.borderTopColor = new StyleColor(l_pathGraphics.color);
+		l_pathDisplay.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
+		l_pathDisplay.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
+		l_pathDisplay.style.borderRightColor = new StyleColor(l_pathGraphics.color);
 
 		SpellPath l_path = p_pathDisplay.m_path;
-		Label l_label = m_pathInfoWindow.Q<Label>("path-name");
+		Label l_label = s_pathInfoWindow.Q<Label>("path-name");
 		l_label.text = l_path.name;
 
-		l_label = m_pathInfoWindow.Q<Label>("path-opposed");
+		l_label = s_pathInfoWindow.Q<Label>("path-opposed");
 		l_label.text = l_path.OpposedPath.Length == 0 ? "" : "<b>Voies opposées : </b>" + string.Join(", ", l_path.OpposedPath.Select(p_path => p_path.name));
 
-		l_label = m_pathInfoWindow.Q<Label>("path-type");
+		l_label = s_pathInfoWindow.Q<Label>("path-type");
 		l_label.text = "<b>Type : </b>" + l_path.pathType;
 
-		l_label = m_pathInfoWindow.Q<Label>("path-description");
+		l_label = s_pathInfoWindow.Q<Label>("path-description");
 		l_label.text = l_path.description;
 
-		l_label = m_pathInfoWindow.Q<Label>("path-spells");
-		l_label.text = "<b>Sorts : </b>" + string.Join(", ", l_path.spells.Select(p_spell => p_spell.name));
+		VisualElement l_pathSpellHolder = s_pathInfoWindow.Q<VisualElement>("path-spells");
+		l_pathSpellHolder.Clear();
+		foreach (Spell l_spell in l_path.spells)
+			l_pathSpellHolder.Add(new Label(l_spell.name));
 	}
 
 	public void SelectLibrary(int p_libraryIndex)
 	{
 		MagicLibrary l_selectedLibrary = m_magicLibraries.m_magicPaths[p_libraryIndex];
-		for (int i = 0; i < m_pathDisplays.Count; i++)
+		for (int i = 0; i < PathDisplays.Count; i++)
 		{
-			KeyValuePair<MagicLibrary, PathDisplay[]> l_keyValuePair = m_pathDisplays.ElementAt(i);
+			KeyValuePair<MagicLibrary, PathDisplay[]> l_keyValuePair = PathDisplays.ElementAt(i);
 			bool l_isSelected = l_keyValuePair.Key == l_selectedLibrary;
 			for (int j = 0; j < l_keyValuePair.Value.Length; j++)
 			{
 				PathDisplay l_pathDisplay = l_keyValuePair.Value[j];
 				l_pathDisplay.m_pathDisplay.style.display = new StyleEnum<DisplayStyle>(l_isSelected ? DisplayStyle.Flex : DisplayStyle.None);
-				bool isOn = m_pathSelection.m_pathSelection[i][j];
+				bool isOn = s_pathSelection.m_PathSelection[i][j] || s_pathSelection.m_PathSelection[i].All(p_element => p_element == false);
 				foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
                 {
                     l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(l_isSelected && isOn ? DisplayStyle.Flex : DisplayStyle.None);
@@ -593,14 +672,14 @@ public class Displayer : MonoBehaviour
 
 	private void BackButtonPressed()
 	{
-		if (m_spellLevelInfoWindow.style.display.value == DisplayStyle.Flex)
-			m_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		else if (m_spellInfoNewSystemWindow.style.display.value == DisplayStyle.Flex)
-			m_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		else if (m_spellInfoOldSystemWindow.style.display.value == DisplayStyle.Flex)
-			m_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-		else if (m_pathInfoWindow.style.display.value == DisplayStyle.Flex)
-			m_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		if (s_spellLevelInfoWindow.style.display.value == DisplayStyle.Flex)
+			s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		else if (s_spellInfoNewSystemWindow.style.display.value == DisplayStyle.Flex)
+			s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		else if (s_spellInfoOldSystemWindow.style.display.value == DisplayStyle.Flex)
+			s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+		else if (s_pathInfoWindow.style.display.value == DisplayStyle.Flex)
+			s_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		else
 			Application.Quit();
 	}

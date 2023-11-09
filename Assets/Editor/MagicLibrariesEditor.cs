@@ -124,15 +124,16 @@ namespace Editor
 			if (GUILayout.Button("Reset player prefs"))
 			{
 				PathSelection l_pathSelection = new PathSelection();
-				l_pathSelection.m_pathSelection = new bool[s_magicLibraries.m_magicPaths.Length][];
-				for (int i = 0; i < l_pathSelection.m_pathSelection.Length; i++)
-					l_pathSelection.m_pathSelection[i] = new bool[s_magicLibraries.m_magicPaths[i].paths.Length];
+				l_pathSelection.m_PathSelection = new bool[s_magicLibraries.m_magicPaths.Length][];
+				for (int i = 0; i < l_pathSelection.m_PathSelection.Length; i++)
+					l_pathSelection.m_PathSelection[i] = new bool[s_magicLibraries.m_magicPaths[i].paths.Length];
 
-				foreach (bool[] l_path in l_pathSelection.m_pathSelection)
+				foreach (bool[] l_path in l_pathSelection.m_PathSelection)
 					for (int l_index = 0; l_index < l_path.Length; l_index++)
-						l_path[l_index] = true;
+						l_path[l_index] = false;
 
 				PlayerPrefs.SetString("path_selection", l_pathSelection.ToString());
+				PlayerPrefs.SetString(Displayer.BOOK_SELECTION, l_pathSelection.ToString());
 			}
 
 			EditorGUILayout.Separator();

@@ -2,15 +2,20 @@
     <Style src="project://database/Assets/UI/Stylesheets/MainMenu.uss?fileID=7433441132597879392&amp;guid=0c9663c7f81d76246be282584d7b967f&amp;type=3#MainMenu" />
     <Style src="project://database/Assets/SlideToggle/SlideToggle.uss?fileID=7433441132597879392&amp;guid=c64d395b927164144bfbc3f968f0849f&amp;type=3#SlideToggle" />
     <Style src="project://database/Assets/UI/Stylesheets/LightTheme.uss?fileID=7433441132597879392&amp;guid=2b716880536653d4d982b52f451f7bcb&amp;type=3#LightTheme" />
+    <Style src="project://database/Assets/UI/Stylesheets/PathToggle.uss?fileID=7433441132597879392&amp;guid=504f945f0cd311f41a7d150a23adf584&amp;type=3#PathToggle" />
     <ui:VisualElement class="background" style="flex-grow: 1;">
         <ui:VisualElement style="flex-direction: row; align-items: center; justify-content: flex-end; padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; gap: 8px; border-bottom-width: 4px; border-left-color: rgb(192, 192, 192); border-right-color: rgb(192, 192, 192); border-top-color: rgb(192, 192, 192); border-bottom-color: rgb(192, 192, 192);">
-            <SlideToggle label="Dark theme" value="false" name="theme-toggle" style="flex-shrink: 0; flex-grow: 0; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 4px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
-            <ui:DropdownField label="Librairie de sorts" index="0" choices="Défaut, Wagi" name="dropdown-library" style="margin-top: 4px; margin-right: 0; margin-bottom: 4px; margin-left: 4px; flex-shrink: 1; flex-grow: 0; padding-right: 6px; border-left-color: rgb(220, 220, 220); border-right-color: rgb(220, 220, 220); border-top-color: rgb(220, 220, 220); border-bottom-color: rgb(220, 220, 220); border-right-width: 2px;" />
-            <SlideToggle label="Nouveau système" name="system-toggle" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+            <SlideToggle label="Book mode" value="false" name="book-toggle" style="flex-shrink: 0; flex-grow: 0; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 4px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 18px;" />
+            <SlideToggle label="Dark theme" value="false" name="theme-toggle" style="flex-shrink: 0; flex-grow: 0; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 4px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 18px;" />
+            <ui:DropdownField label="Librairie de sorts" index="0" choices="Défaut, Wagi" name="dropdown-library" style="margin-top: 4px; margin-right: 0; margin-bottom: 4px; margin-left: 4px; flex-shrink: 1; flex-grow: 0; padding-right: 6px; border-left-color: rgb(220, 220, 220); border-right-color: rgb(220, 220, 220); border-top-color: rgb(220, 220, 220); border-bottom-color: rgb(220, 220, 220); border-right-width: 2px; font-size: 18px;" />
+            <SlideToggle label="Nouveau système" name="system-toggle" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; font-size: 18px;" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" name="path-view" vertical-scroller-visibility="Hidden" style="width: 140px; padding-top: 6px; padding-right: 2px; padding-bottom: 6px; padding-left: 6px; border-right-width: 4px; border-right-color: rgb(192, 192, 192); border-left-color: rgb(192, 192, 192); border-top-color: rgb(192, 192, 192); border-bottom-color: rgb(192, 192, 192);" />
-            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="spell-view" style="flex-grow: 1;" />
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" name="path-view" vertical-scroller-visibility="Hidden" style="width: 140px;">
+                <ui:VisualElement name="book-path-view" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); align-items: center; flex-wrap: wrap;" />
+                <ui:VisualElement name="single-path-view" style="flex-grow: 1; align-items: center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; flex-wrap: wrap;" />
+            </ui:ScrollView>
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="spell-view" style="flex-grow: 1; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="info-window-holder" picking-mode="Ignore" style="flex-grow: 1; position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />

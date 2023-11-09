@@ -3,5 +3,23 @@
 }
 
 .unity-label {
-	color: #ffffff;
+	color: white;
+	font-size: 16px;
+}
+
+.title {
+	font-size: 18px;
+	-unity-font-style: bold;
+}
+
+.extraBold {
+	letter-spacing: 1px;
+	-unity-text-outline-width: 0.5px;
+	-unity-text-outline-color: white;
+}
+
+.path-toggle .unity-toggle__input:checked {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-color: white;
+	border-width: 4px;
 }

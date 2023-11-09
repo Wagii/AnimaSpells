@@ -1,15 +1,11 @@
-.unity-toggle {
+.path-toggle {
 }
 
-.unity-toggle .unity-toggle__input {
+.path-toggle .unity-toggle__input {
     flex-grow: 1;
 }
 
-.unity-toggle .unity-toggle__input:checked {
-    background-color: rgba(0, 0, 0, 0.33);
-}
-
-.unity-toggle .unity-toggle__input .unity-toggle__checkmark {
+.path-toggle .unity-toggle__input .unity-toggle__checkmark {
     flex-grow: 1;
     align-self: auto;
     width: auto;

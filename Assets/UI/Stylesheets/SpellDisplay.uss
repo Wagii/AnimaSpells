@@ -1,15 +1,12 @@
-.unity-label {
-    font-size: 11px;
-    padding-top: 4px;
-    padding-right: 2px;
-    padding-bottom: 4px;
-    padding-left: 1px;
+.rank-label {
+    font-size: 16px;
+    padding: 4px 2px 4px 1px;
     margin-top: initial;
     margin-bottom: initial;
 }
 
 .spell-rank {
-    width: 45%;
+    width: 48%;
     align-items: stretch;
     margin-top: 2px;
     margin-right: 2px;
@@ -17,7 +14,7 @@
     margin-left: 2px;
     padding: 0;
     border-width: 0;
-    background-color: initial;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .spell-rank > Label {
