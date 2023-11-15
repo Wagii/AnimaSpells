@@ -59685,7 +59685,7 @@ MonoBehaviour:
           maintainDivider: 10
           maintainCost: 12
           maintainType: 2
-      - name: 
+      - name: "R\xE9g\xE9n\xE9ration Magique"
         pathReference: Mana
         forbiddenPaths: []
         level: 32

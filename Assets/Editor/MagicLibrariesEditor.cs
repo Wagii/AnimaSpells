@@ -36,7 +36,12 @@ namespace Editor
 			foreach (SpellPath l_spellPath in paths)
 			{
 				if (s_magicLibraries.m_PathGraphicsArray.None(p_graphics => p_graphics.pathReference == l_spellPath.name))
-					s_magicLibraries.m_PathGraphicsArray = s_magicLibraries.m_PathGraphicsArray.Append(new PathGraphics(l_spellPath.name)).ToArray();
+					s_magicLibraries.m_PathGraphicsArray = s_magicLibraries.m_PathGraphicsArray.Append(new PathGraphics
+					{
+						pathReference = l_spellPath.name,
+						color = default,
+						texture2D = null
+					}).ToArray();
 			}
 
 			s_magicLibraries.PathGraphicsMap.Clear();
@@ -110,13 +115,19 @@ namespace Editor
 				foreach (MagicLibrary l_magicLibrary in s_magicLibraries.m_magicPaths)
 				{
 					Dictionary<string, SpellPath> l_spellPaths = l_magicLibrary.paths.ToDictionary(p_spellPath => p_spellPath.name, p_spellPath => p_spellPath);
-					foreach (SpellPath l_spellPath in l_magicLibrary.paths)
+					for (int i = 0; i < l_magicLibrary.paths.Length; i++)
 					{
-						Debug.Log($"{l_magicLibrary.name} - {l_spellPath.name}\n{string.Join(", ", l_spellPath.opposedPaths)}");
-						l_spellPath.OpposedPath = l_spellPath.opposedPaths.Select(p_path => l_spellPaths[p_path]).ToArray();
+						SpellPath l_spellPath = l_magicLibrary.paths[i];
+						Debug.Log(
+							$"{l_magicLibrary.name} - {l_spellPath.name}\n{string.Join(", ", l_spellPath.opposedPaths)}");
+						l_spellPath.OpposedPath =
+							l_spellPath.opposedPaths.Select(p_path => l_spellPaths[p_path]).ToArray();
 
-						foreach (Spell l_spell in l_spellPath.spells)
+						for (int j = 0; j < l_spellPath.spells.Length; j++)
+						{
+							Spell l_spell = l_spellPath.spells[j];
 							l_spell.PathReference = l_spellPath;
+						}
 					}
 				}
 			}
@@ -172,8 +183,9 @@ namespace Editor
 
 			if (GUILayout.Button("Extract median color"))
 			{
-				foreach (PathGraphics l_pathGraphics in s_magicLibraries.m_PathGraphicsArray)
+				for (int i = 0; i < s_magicLibraries.m_PathGraphicsArray.Length; i++)
 				{
+					PathGraphics l_pathGraphics = s_magicLibraries.m_PathGraphicsArray[i];
 					if (l_pathGraphics.texture2D == null) continue;
 					Color[] l_pixels = l_pathGraphics.texture2D.GetPixels();
 					l_pixels = l_pixels.Where(p_pixel => Math.Abs(p_pixel.a - 1) < 0.01f).ToArray();
