@@ -1,156 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data.Scripts;
 using Scriptables;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Action = System.Action;
-
-public class PathSelection
-{
-	public bool[][] m_PathSelection;
-
-	public readonly string m_saveKey = "path_selection";
-
-	public override string ToString()
-	{
-		string l_string = "";
-		for (int l_index = 0; l_index < m_PathSelection.Length; l_index++)
-		{
-			bool[] l_bools = m_PathSelection[l_index];
-			l_string += string.Join(",", l_bools.Select(p_bool => p_bool ? "1" : "0"));
-			if (l_index != m_PathSelection.Length - 1)
-				l_string += "|";
-		}
-
-		return l_string;
-	}
-
-	public PathSelection() {}
-
-	public PathSelection(string p_string, string p_saveKey = "path_selection")
-	{
-		string[] l_lines = p_string.Split('|');
-		m_PathSelection = new bool[l_lines.Length][];
-		for (int l_index = 0; l_index < l_lines.Length; l_index++)
-		{
-			string l_line = l_lines[l_index];
-			string[] l_bools = l_line.Split(',');
-			m_PathSelection[l_index] = new bool[l_bools.Length];
-			for (int l_boolIndex = 0; l_boolIndex < l_bools.Length; l_boolIndex++)
-			{
-				string l_bool = l_bools[l_boolIndex];
-				m_PathSelection[l_index][l_boolIndex] = l_bool == "1";
-			}
-		}
-		m_saveKey = p_saveKey;
-	}
-
-	public void SaveSelection()
-	{
-		PlayerPrefs.SetString(m_saveKey, ToString());
-		PlayerPrefs.Save();
-	}
-
-	public static PathSelection LoadSelection(string p_saveKey = "path_selection")
-	{
-		if (!PlayerPrefs.HasKey(p_saveKey) || PlayerPrefs.GetString(p_saveKey, "") == "")
-			GenerateDefaultPathSelection(p_saveKey);
-		return new PathSelection(PlayerPrefs.GetString(p_saveKey, ""), p_saveKey);
-	}
-
-	public static void GenerateDefaultPathSelection(string p_saveKey)
-	{
-		if (Displayer.instance == null || Displayer.MagicLibraries == null) return;
-
-		MagicLibraries magicLibraries = Displayer.MagicLibraries;
-		PathSelection pathSelection = new PathSelection();
-
-		int libraryCount = magicLibraries.m_magicPaths.Length;
-		pathSelection.m_PathSelection = new bool[libraryCount][];
-		for (int i = 0; i < libraryCount; i++)
-			pathSelection.m_PathSelection[i] = new bool[magicLibraries.m_magicPaths[i].paths.Length];
-
-		PlayerPrefs.SetString(p_saveKey, pathSelection.ToString());
-	}
-}
-
-public class SpellDisplay
-{
-	public Spell m_spell;
-	public VisualElement m_VisualElement;
-}
-
-public class PathDisplay
-{
-	public SpellPath m_path;
-	public VisualElement m_pathDisplay;
-	public SpellDisplay[] m_spellDisplays;
-}
-
-public class HoldManipulator : PointerManipulator
-{
-	private readonly MonoBehaviour m_target;
-	private readonly float m_holdTime;
-	private readonly Action m_onHeld;
-	private Coroutine m_holdRoutine;
-
-	public HoldManipulator(MonoBehaviour p_target, float p_holdTime, Action p_onHeld)
-	{
-		m_target = p_target;
-		m_holdTime = p_holdTime;
-		m_onHeld = p_onHeld;
-	}
-
-	protected override void RegisterCallbacksOnTarget()
-	{
-		target.RegisterCallback<PointerDownEvent>(DownCallback, TrickleDown.TrickleDown);
-		target.RegisterCallback<PointerUpEvent>(UpCallback);
-		target.RegisterCallback<PointerCancelEvent>(UpCallback);
-		target.RegisterCallback<PointerLeaveEvent>(UpCallback);
-	}
-
-	private void DownCallback(PointerDownEvent _)
-	{
-		m_holdRoutine = m_target.StartCoroutine(HoldRoutine(m_holdTime, m_onHeld));
-	}
-
-	private void UpCallback(PointerUpEvent _)
-	{
-		if (m_holdRoutine != null) m_target.StopCoroutine(m_holdRoutine);
-	}
-
-	private void UpCallback(PointerCancelEvent _)
-	{
-		if (m_holdRoutine != null) m_target.StopCoroutine(m_holdRoutine);
-	}
-
-	private void UpCallback(PointerLeaveEvent _)
-	{
-		if (m_holdRoutine != null) m_target.StopCoroutine(m_holdRoutine);
-	}
-
-	protected override void UnregisterCallbacksFromTarget()
-	{
-		target.UnregisterCallback<PointerLeaveEvent>(UpCallback);
-		target.UnregisterCallback<PointerCancelEvent>(UpCallback);
-		target.UnregisterCallback<PointerUpEvent>(UpCallback);
-		target.UnregisterCallback<PointerDownEvent>(DownCallback, TrickleDown.TrickleDown);
-	}
-
-	private static IEnumerator HoldRoutine(float p_holdTime, Action p_onHeld)
-	{
-		float timer = 0f;
-		while (timer < p_holdTime)
-		{
-			yield return null;
-			timer += Time.deltaTime;
-		}
-		p_onHeld?.Invoke();
-	}
-}
 
 public class Displayer : MonoBehaviour
 {
@@ -172,8 +26,8 @@ public class Displayer : MonoBehaviour
 		{Rank.Arcane, ArcaneColor}
 	};
 
-	public static Displayer instance;
-	public static MagicLibraries MagicLibraries => instance.m_magicLibraries;
+	public static Displayer m_Instance;
+	public static MagicLibraries MagicLibraries => m_Instance.m_magicLibraries;
 
 	[SerializeField] private UIDocument m_uiDocument;
 	[SerializeField] private MagicLibraries m_magicLibraries;
@@ -202,16 +56,17 @@ public class Displayer : MonoBehaviour
 	private int m_selectedLibrary;
 	private bool m_displayingBookStyle;
 	private bool m_newSystem;
+	private bool m_themeSelected;
 
 	private void Awake()
 	{
-		if (instance != null)
+		if (m_Instance != null)
 		{
 			DestroyImmediate(this);
 			return;
 		}
 
-		instance = this;
+		m_Instance = this;
 	}
 
 	private void Start()
@@ -223,12 +78,128 @@ public class Displayer : MonoBehaviour
 		// return;
 		s_root = m_uiDocument.rootVisualElement;
 
+		LoadPlayerPrefs();
+
+		SetupInfoWindows();
+
+		s_pathScrollView = s_root.Q<ScrollView>("path-view");
+		s_spellScrollView = s_root.Q<ScrollView>("spell-view");
+
+		GeneratePathDisplays();
+
+		PrepareOptionButtons();
+
+		ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
+	}
+
+	private void GeneratePathDisplays()
+	{
+		// TODO : GIGA Optimize this
+		for (int l_libraryIndex = 0; l_libraryIndex < m_magicLibraries.m_magicPaths.Length; l_libraryIndex++)
+		{
+			MagicLibrary l_magicLibrary = m_magicLibraries.m_magicPaths[l_libraryIndex];
+
+			List<PathDisplay> l_pathDisplays = new();
+			for (int l_pathIndex = 0; l_pathIndex < l_magicLibrary.paths.Length; l_pathIndex++)
+			{
+
+				SpellPath l_spellPath = l_magicLibrary.paths[l_pathIndex];
+				PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[l_spellPath.name];
+
+				PathDisplay l_pathDisplay = new() { m_Path = l_spellPath };
+
+				// Path display generation
+				Toggle l_pathElement = m_pathDisplayAsset.CloneTree()[0].Q<Toggle>();
+				l_pathElement.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
+				l_pathElement.style.borderRightColor = new StyleColor(l_pathGraphics.color);
+				l_pathElement.style.borderTopColor = new StyleColor(l_pathGraphics.color);
+				l_pathElement.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
+
+				l_pathElement.SetValueWithoutNotify(s_pathSelection.m_PathSelection[l_libraryIndex][l_pathIndex]);
+
+				VisualElement l_pathIcon = l_pathElement.Q("path-icon");
+				l_pathIcon.style.backgroundImage = new StyleBackground(l_pathGraphics.texture2D);
+
+				s_pathScrollView.Add(l_pathElement);
+
+				l_pathDisplay.m_PathDisplay = l_pathElement;
+				l_pathDisplay.m_SpellDisplays = GenerateSpellDisplays(l_spellPath.spells, l_pathGraphics);
+
+				l_pathElement.AddManipulator(new HoldManipulator(this, m_holdTime, () => DisplayPathInfos(l_pathDisplay)));
+
+				// Path callback registration
+				int l_localLibraryIndex = l_libraryIndex;
+				int l_localPathIndex = l_pathIndex;
+				l_pathElement.RegisterValueChangedCallback(p_evt =>
+				{
+					if (p_evt.newValue && !m_displayingBookStyle)
+					{
+						PathDisplay[] l_displays = PathDisplays.ElementAt(l_localLibraryIndex).Value;
+						for (int i = 0; i < s_pathSelection.m_PathSelection[l_localLibraryIndex].Length; i++)
+						{
+							if (i == l_localPathIndex) continue;
+							s_pathSelection.m_PathSelection[l_localLibraryIndex][i] = false;
+							l_displays[i].m_PathDisplay.SetValueWithoutNotify(false);
+						}
+					}
+					s_pathSelection.m_PathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
+					s_pathSelection.SaveSelection();
+					bool displayEverything = s_pathSelection.m_PathSelection[l_localLibraryIndex].All(p_element => p_element == false);
+					ToggleAllPaths(displayEverything);
+				});
+
+				l_pathDisplays.Add(l_pathDisplay);
+			}
+
+			PathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
+		}
+	}
+
+	private SpellDisplay[] GenerateSpellDisplays(IReadOnlyList<Spell> p_spellPathSpells, PathGraphics p_pathGraphics)
+	{
+		SpellDisplay[] l_spellDisplays = new SpellDisplay[p_spellPathSpells.Count];
+		// TODO : Optimize this
+		for (int i = 0; i < p_spellPathSpells.Count; i++)
+		{
+			// Spell display generation
+			VisualElement l_spellDisplayAsset = m_spellDisplayAsset.CloneTree()[0];
+			VisualElement l_spellInfoButton = l_spellDisplayAsset.Q<Button>();
+
+			// Spell display setup
+			l_spellInfoButton.style.borderTopColor = new StyleColor(p_pathGraphics.color);
+			l_spellInfoButton.style.borderBottomColor = new StyleColor(p_pathGraphics.color);
+			l_spellInfoButton.style.borderLeftColor = new StyleColor(p_pathGraphics.color);
+			l_spellInfoButton.style.borderRightColor = new StyleColor(p_pathGraphics.color);
+			l_spellInfoButton.style.backgroundColor =
+				new StyleColor(Color.Lerp(p_pathGraphics.color, Color.black, 0.16f));
+
+			l_spellInfoButton.Q<Label>("spell-name").text = p_spellPathSpells[i].name;
+			l_spellInfoButton.Q<Label>("spell-path").text = p_spellPathSpells[i].pathReference;
+			l_spellInfoButton.Q<Label>("spell-level").text = p_spellPathSpells[i].level.ToString();
+
+			Spell spell = p_spellPathSpells[i];
+			l_spellInfoButton.Q<Button>().clickable.clicked += () => OnSpellClicked(spell);
+
+			s_spellScrollView.Add(l_spellDisplayAsset);
+			l_spellDisplays[i] = new SpellDisplay {m_Spell = p_spellPathSpells[i], m_VisualElement = l_spellDisplayAsset};
+		}
+
+		return l_spellDisplays;
+	}
+
+	private void LoadPlayerPrefs()
+	{
 		s_pathSelection = PathSelection.LoadSelection();
 		m_bookStyleSelection = PathSelection.LoadSelection(BOOK_SELECTION);
 
-		s_root.Q<ScrollView>("path-view");
-		s_pathScrollView = s_root.Q<ScrollView>("path-view");
-		s_spellScrollView = s_root.Q<ScrollView>("spell-view");
+		m_displayingBookStyle = PlayerPrefs.GetInt(SELECTED_BOOK, 0) == 1;
+		m_selectedLibrary = PlayerPrefs.GetInt(SELECTED_LIBRARY, 0);
+		m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
+		m_themeSelected = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
+	}
+
+	private void SetupInfoWindows()
+	{
 		s_infoWindowHolder = s_root.Q<VisualElement>("info-window-holder");
 
 		s_pathInfoWindow = m_pathInfoWindowAsset.CloneTree()[0];
@@ -254,69 +225,15 @@ public class Displayer : MonoBehaviour
 		s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+	}
 
+	private void PrepareOptionButtons()
+	{
 		SlideToggle l_bookMode = s_root.Q<SlideToggle>("book-toggle");
-		l_bookMode.RegisterValueChangedCallback(p_evt =>
-		{
-			m_displayingBookStyle = p_evt.newValue;
-			if (m_displayingBookStyle)
-			{
-				s_pathSelection = new PathSelection(m_bookStyleSelection.ToString());
-				for (int i = 0; i < PathDisplays.Count; i++)
-				{
-					PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
-					for (int j = 0; j < l_pathDisplays.Length; j++)
-					{
-						Toggle l_toggle = l_pathDisplays[j].m_pathDisplay.Q<Toggle>();
-						l_toggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[i][j]);
-					}
-				}
-				ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
-			}
-			else
-			{
-				m_bookStyleSelection = new PathSelection(s_pathSelection.ToString(), BOOK_SELECTION);
-				for (int i = 0; i < PathDisplays.Count; i++)
-				{
-					PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
-					bool l_firstSelected = false;
-					for (int j = 0; j < l_pathDisplays.Length; j++)
-					{
-						Toggle l_toggle = l_pathDisplays[j].m_pathDisplay.Q<Toggle>();
-						if (s_pathSelection.m_PathSelection[i][j] && !l_firstSelected)
-						{
-							l_firstSelected = true;
-						}
-						else
-						{
-							l_toggle.SetValueWithoutNotify(false);
-							s_pathSelection.m_PathSelection[i][j] = false;
-						}
-					}
-				}
-			}
-			PlayerPrefs.SetString(BOOK_SELECTION, m_bookStyleSelection.ToString());
-			PlayerPrefs.SetString("path_selection", s_pathSelection.ToString());
-			PlayerPrefs.SetInt(SELECTED_BOOK, m_displayingBookStyle ? 1 : 0);
-			PlayerPrefs.Save();
-		});
+		l_bookMode.RegisterValueChangedCallback(BookModeChanged);
 
 		SlideToggle l_theme = s_root.Q<SlideToggle>("theme-toggle");
-		l_theme.RegisterValueChangedCallback(p_evt =>
-		{
-			if (p_evt.newValue)
-			{
-				s_root.styleSheets.Remove(m_lightTheme);
-				s_root.styleSheets.Add(m_darkTheme);
-			}
-			else
-			{
-				s_root.styleSheets.Remove(m_darkTheme);
-				s_root.styleSheets.Add(m_lightTheme);
-			}
-			PlayerPrefs.SetInt(SELECTED_THEME, p_evt.newValue ? 1 : 0);
-			PlayerPrefs.Save();
-		});
+		l_theme.RegisterValueChangedCallback(ThemeChanged);
 
 		DropdownField l_libraries = s_root.Q<DropdownField>("dropdown-library");
 		l_libraries.choices = m_magicLibraries.m_magicPaths.Select(p_library => p_library.name).ToList();
@@ -329,129 +246,97 @@ public class Displayer : MonoBehaviour
 		});
 
 		SlideToggle l_systems = s_root.Q<SlideToggle>("system-toggle");
-		l_systems.RegisterValueChangedCallback(p_index =>
-		{
-			m_newSystem = p_index.newValue;
-			PlayerPrefs.SetInt(SELECTED_SYSTEM, p_index.newValue ? 1 : 0);
-			PlayerPrefs.Save();
-		});
+		l_systems.RegisterValueChangedCallback(OnSystemChanged);
 
-		for (int l_libraryIndex = 0; l_libraryIndex < m_magicLibraries.m_magicPaths.Length; l_libraryIndex++)
-		{
-			MagicLibrary l_magicLibrary = m_magicLibraries.m_magicPaths[l_libraryIndex];
-
-			List<PathDisplay> l_pathDisplays = new();
-			for (int l_pathIndex = 0; l_pathIndex < l_magicLibrary.paths.Length; l_pathIndex++)
-			{
-				SpellPath l_spellPath = l_magicLibrary.paths[l_pathIndex];
-				PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[l_spellPath.name];
-
-				PathDisplay l_pathDisplay = new() { m_path = l_spellPath };
-
-				// Path display generation
-				VisualElement l_pathElement = m_pathDisplayAsset.CloneTree()[0];
-				Toggle l_pathToggle = l_pathElement.Q<Toggle>();
-				l_pathToggle.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
-				l_pathToggle.style.borderRightColor = new StyleColor(l_pathGraphics.color);
-				l_pathToggle.style.borderTopColor = new StyleColor(l_pathGraphics.color);
-				l_pathToggle.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
-				VisualElement l_pathIcon = l_pathElement.Q("path-icon");
-				l_pathIcon.style.backgroundImage = new StyleBackground(l_pathGraphics.texture2D);
-
-				s_pathScrollView.Add(l_pathElement);
-
-				l_pathDisplay.m_pathDisplay = l_pathElement;
-
-				List<SpellDisplay> l_spellDisplays = new();
-				foreach (Spell l_spell in l_spellPath.spells)
-				{
-					// Spell display generation
-					VisualElement l_spellDisplayAsset = m_spellDisplayAsset.CloneTree()[0];
-					VisualElement l_spellInfoButton = l_spellDisplayAsset.Q<Button>();
-
-					// Spell display setup
-					l_spellInfoButton.style.borderTopColor = new StyleColor(l_pathGraphics.color);
-					l_spellInfoButton.style.borderBottomColor = new StyleColor(l_pathGraphics.color);
-					l_spellInfoButton.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
-					l_spellInfoButton.style.borderRightColor = new StyleColor(l_pathGraphics.color);
-					l_spellInfoButton.style.backgroundColor = new StyleColor(Color.Lerp(l_pathGraphics.color, Color.black, 0.16f));
-
-					l_spellInfoButton.Q<Label>("spell-name").text = l_spell.name;
-					l_spellInfoButton.Q<Label>("spell-path").text = l_spellPath.name;
-					l_spellInfoButton.Q<Label>("spell-level").text = l_spell.level.ToString();
-
-					l_spellInfoButton.Q<Button>().clickable.clicked += () => OnSpellClicked(l_spell);
-
-					s_spellScrollView.Add(l_spellDisplayAsset);
-					l_spellDisplays.Add(new SpellDisplay { m_spell = l_spell, m_VisualElement = l_spellDisplayAsset });
-				}
-
-				l_pathDisplay.m_spellDisplays = l_spellDisplays.ToArray();
-
-
-				// Path callback registration
-				int l_localLibraryIndex = l_libraryIndex;
-				int l_localPathIndex = l_pathIndex;
-				l_pathToggle.RegisterValueChangedCallback(p_evt =>
-				{
-					if (p_evt.newValue && !m_displayingBookStyle)
-					{
-						PathDisplay[] l_displays = PathDisplays.ElementAt(l_localLibraryIndex).Value;
-						for (int i = 0; i < s_pathSelection.m_PathSelection[l_localLibraryIndex].Length; i++)
-						{
-							if (i == l_localPathIndex) continue;
-							s_pathSelection.m_PathSelection[l_localLibraryIndex][i] = false;
-							l_displays[i].m_pathDisplay.Q<Toggle>().SetValueWithoutNotify(false);
-						}
-					}
-					s_pathSelection.m_PathSelection[l_localLibraryIndex][l_localPathIndex] = p_evt.newValue;
-					s_pathSelection.SaveSelection();
-					bool displayEverything = s_pathSelection.m_PathSelection[l_localLibraryIndex].All(p_element => p_element == false);
-					ToggleAllPaths(displayEverything);
-				});
-				l_pathToggle.AddManipulator(new HoldManipulator(this, m_holdTime, () =>
-				{
-					DisplayPathInfos(l_pathDisplay);
-				}));
-
-				l_pathDisplays.Add(l_pathDisplay);
-			}
-
-			PathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
-		}
-
-		for (int libraryIndex = 0; libraryIndex < PathDisplays.Count; libraryIndex++)
-		{
-			PathDisplay[] pathDisplays = PathDisplays.ElementAt(libraryIndex).Value;
-			for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
-            {
-				PathDisplay pathDisplay = pathDisplays[pathIndex];
-				Toggle pathToggle = pathDisplay.m_pathDisplay.Q<Toggle>();
-				pathToggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[libraryIndex][pathIndex]);
-            }
-        }
-
-		m_displayingBookStyle = PlayerPrefs.GetInt(SELECTED_BOOK, 0) == 1;
-		m_selectedLibrary = PlayerPrefs.GetInt(SELECTED_LIBRARY, 0);
-		m_newSystem = PlayerPrefs.GetInt(SELECTED_SYSTEM, 1) == 1;
 		l_bookMode.value = m_displayingBookStyle;
-		l_theme.value = PlayerPrefs.GetInt(SELECTED_THEME, 1) == 1;
+		l_theme.value = m_themeSelected;
 		l_libraries.index = m_selectedLibrary;
 		l_systems.value = m_newSystem;
+	}
 
-		ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
+	private void BookModeChanged(ChangeEvent<bool> p_evt)
+	{
+		// TODO : Optimize this
+		m_displayingBookStyle = p_evt.newValue;
+		if (m_displayingBookStyle)
+		{
+			s_pathSelection = new PathSelection(m_bookStyleSelection.ToString());
+			for (int i = 0; i < PathDisplays.Count; i++)
+			{
+				PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
+				for (int j = 0; j < l_pathDisplays.Length; j++)
+				{
+					Toggle l_toggle = l_pathDisplays[j].m_PathDisplay.Q<Toggle>();
+					l_toggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[i][j]);
+				}
+			}
+
+			ToggleAllPaths(s_pathSelection.m_PathSelection[m_selectedLibrary].All(p_element => p_element == false));
+		}
+		else
+		{
+			m_bookStyleSelection = new PathSelection(s_pathSelection.ToString(), BOOK_SELECTION);
+			for (int i = 0; i < PathDisplays.Count; i++)
+			{
+				PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
+				bool l_firstSelected = false;
+				for (int j = 0; j < l_pathDisplays.Length; j++)
+				{
+					Toggle l_toggle = l_pathDisplays[j].m_PathDisplay.Q<Toggle>();
+					if (s_pathSelection.m_PathSelection[i][j] && !l_firstSelected)
+					{
+						l_firstSelected = true;
+					}
+					else
+					{
+						l_toggle.SetValueWithoutNotify(false);
+						s_pathSelection.m_PathSelection[i][j] = false;
+					}
+				}
+			}
+		}
+
+		PlayerPrefs.SetString(BOOK_SELECTION, m_bookStyleSelection.ToString());
+		PlayerPrefs.SetString("path_selection", s_pathSelection.ToString());
+		PlayerPrefs.SetInt(SELECTED_BOOK, m_displayingBookStyle ? 1 : 0);
+		PlayerPrefs.Save();
+	}
+
+	private void ThemeChanged(ChangeEvent<bool> p_evt)
+	{
+		if (p_evt.newValue)
+		{
+			s_root.styleSheets.Remove(m_lightTheme);
+			s_root.styleSheets.Add(m_darkTheme);
+		}
+		else
+		{
+			s_root.styleSheets.Remove(m_darkTheme);
+			s_root.styleSheets.Add(m_lightTheme);
+		}
+
+		PlayerPrefs.SetInt(SELECTED_THEME, p_evt.newValue ? 1 : 0);
+		PlayerPrefs.Save();
+	}
+
+	private void OnSystemChanged(ChangeEvent<bool> p_index)
+	{
+		m_newSystem = p_index.newValue;
+		PlayerPrefs.SetInt(SELECTED_SYSTEM, p_index.newValue ? 1 : 0);
+		PlayerPrefs.Save();
 	}
 
 	private void ToggleAllPaths(bool p_displayEverything)
 	{
+		// TODO : Optimize this
 		PathDisplay[] pathDisplays = PathDisplays.ElementAt(m_selectedLibrary).Value;
 		for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
         {
 			PathDisplay pathDisplay = pathDisplays[pathIndex];
 			bool pathDisplaying = s_pathSelection.m_PathSelection[m_selectedLibrary][pathIndex];
-			for (int spellIndex = 0; spellIndex < pathDisplay.m_spellDisplays.Length; spellIndex++)
+			for (int spellIndex = 0; spellIndex < pathDisplay.m_SpellDisplays.Length; spellIndex++)
 			{
-				pathDisplay.m_spellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(p_displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
+				pathDisplay.m_SpellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(p_displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
 			}
         }
     }
@@ -478,6 +363,7 @@ public class Displayer : MonoBehaviour
 		Label l_label = l_spellDisplayNew.Q<Label>("spell-name");
 		l_label.text = p_spell.name;
 		l_label.style.color = new StyleColor(l_pathGraphics.color);
+		l_label.style.unityTextOutlineColor = new StyleColor(l_pathGraphics.color);
 
 		l_label = l_spellDisplayNew.Q<Label>("spell-level");
 		l_label.text = p_spell.level.ToString();
@@ -616,7 +502,7 @@ public class Displayer : MonoBehaviour
 	private void DisplayPathInfos(PathDisplay p_pathDisplay)
 	{
 		s_pathInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
-		PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[p_pathDisplay.m_path.name];
+		PathGraphics l_pathGraphics = m_magicLibraries.PathGraphicsMap[p_pathDisplay.m_Path.name];
 
 		ScrollView l_pathDisplay = s_pathInfoWindow.Q<ScrollView>("holder");
 		l_pathDisplay.style.borderTopColor = new StyleColor(l_pathGraphics.color);
@@ -624,7 +510,7 @@ public class Displayer : MonoBehaviour
 		l_pathDisplay.style.borderLeftColor = new StyleColor(l_pathGraphics.color);
 		l_pathDisplay.style.borderRightColor = new StyleColor(l_pathGraphics.color);
 
-		SpellPath l_path = p_pathDisplay.m_path;
+		SpellPath l_path = p_pathDisplay.m_Path;
 		Label l_label = s_pathInfoWindow.Q<Label>("path-name");
 		l_label.text = l_path.name;
 
@@ -645,6 +531,7 @@ public class Displayer : MonoBehaviour
 
 	public void SelectLibrary(int p_libraryIndex)
 	{
+		// TODO : Optimize this
 		MagicLibrary l_selectedLibrary = m_magicLibraries.m_magicPaths[p_libraryIndex];
 		for (int i = 0; i < PathDisplays.Count; i++)
 		{
@@ -653,9 +540,9 @@ public class Displayer : MonoBehaviour
 			for (int j = 0; j < l_keyValuePair.Value.Length; j++)
 			{
 				PathDisplay l_pathDisplay = l_keyValuePair.Value[j];
-				l_pathDisplay.m_pathDisplay.style.display = new StyleEnum<DisplayStyle>(l_isSelected ? DisplayStyle.Flex : DisplayStyle.None);
+				l_pathDisplay.m_PathDisplay.style.display = new StyleEnum<DisplayStyle>(l_isSelected ? DisplayStyle.Flex : DisplayStyle.None);
 				bool isOn = s_pathSelection.m_PathSelection[i][j] || s_pathSelection.m_PathSelection[i].All(p_element => p_element == false);
-				foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_spellDisplays)
+				foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_SpellDisplays)
                 {
                     l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(l_isSelected && isOn ? DisplayStyle.Flex : DisplayStyle.None);
                 }
@@ -671,7 +558,7 @@ public class Displayer : MonoBehaviour
 		}
 	}
 
-	private void BackButtonPressed()
+	private static void BackButtonPressed()
 	{
 		if (s_spellLevelInfoWindow.style.display.value == DisplayStyle.Flex)
 			s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);

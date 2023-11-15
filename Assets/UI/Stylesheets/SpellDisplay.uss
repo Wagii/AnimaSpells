@@ -14,7 +14,9 @@
     margin-left: 2px;
     padding: 0;
     border-width: 0;
+    height: 50%;
     background-color: rgba(0, 0, 0, 0);
+    flex-grow: 1;
 }
 
 .spell-rank > Label {
@@ -87,4 +89,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    flex-shrink: 0;
+    flex-grow: 1;
+    margin-right: 6px;
+    margin-left: 6px;
 }
