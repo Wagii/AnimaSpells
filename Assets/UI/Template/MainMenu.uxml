@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Stylesheets/MainMenu.uss?fileID=7433441132597879392&amp;guid=0c9663c7f81d76246be282584d7b967f&amp;type=3#MainMenu" />
     <Style src="project://database/Assets/SlideToggle/SlideToggle.uss?fileID=7433441132597879392&amp;guid=c64d395b927164144bfbc3f968f0849f&amp;type=3#SlideToggle" />
+    <Style src="project://database/Assets/UI/Stylesheets/PathToggle.uss?fileID=7433441132597879392&amp;guid=504f945f0cd311f41a7d150a23adf584&amp;type=3#PathToggle" />
     <Style src="project://database/Assets/UI/Stylesheets/SpellDisplay.uss?fileID=7433441132597879392&amp;guid=b4af4b5404abb6e428aed6cb34bf72f6&amp;type=3#SpellDisplay" />
     <Style src="project://database/Assets/UI/Stylesheets/LightTheme.uss?fileID=7433441132597879392&amp;guid=2b716880536653d4d982b52f451f7bcb&amp;type=3#LightTheme" />
-    <Style src="project://database/Assets/UI/Stylesheets/PathToggle.uss?fileID=7433441132597879392&amp;guid=504f945f0cd311f41a7d150a23adf584&amp;type=3#PathToggle" />
     <ui:VisualElement class="background" style="flex-grow: 1;">
         <ui:VisualElement style="flex-direction: column; gap: 8px; border-bottom-width: 4px; border-left-color: rgb(192, 192, 192); border-right-color: rgb(192, 192, 192); border-top-color: rgb(192, 192, 192); border-bottom-color: rgb(192, 192, 192); align-items: flex-end;">
             <ui:VisualElement style="padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; flex-grow: 1; flex-direction: row-reverse;">
@@ -34,4 +34,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="info-window-holder" picking-mode="Ignore" style="flex-grow: 1; position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
+    <ui:VisualElement name="waiting-screen" class="background" style="flex-grow: 1; position: absolute; top: 0; bottom: 0; right: 0; left: 0; align-items: center; justify-content: space-around; display: none;">
+        <ui:Label tabindex="-1" text="Just a second ..." display-tooltip-when-elided="true" class="title" style="font-size: 22px;" />
+    </ui:VisualElement>
 </ui:UXML>

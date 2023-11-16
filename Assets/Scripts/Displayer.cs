@@ -5,6 +5,7 @@ using Data.Scripts;
 using Scriptables;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Action = System.Action;
 
 public class Displayer : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Displayer : MonoBehaviour
 	[SerializeField] private StyleSheet m_darkTheme;
 	[SerializeField] private StyleSheet m_lightTheme;
 	[SerializeField] private float m_holdTime;
+    [SerializeField] private int m_asyncOperationBufferSize = 100;
 
 	private static readonly Dictionary<MagicLibrary, PathDisplay[]> PathDisplays = new Dictionary<MagicLibrary, PathDisplay[]>();
 	private static VisualElement s_root;
@@ -51,7 +53,9 @@ public class Displayer : MonoBehaviour
 	private static VisualElement s_spellInfoNewSystemWindow;
 	private static VisualElement s_spellInfoOldSystemWindow;
 	private static VisualElement s_spellLevelInfoWindow;
+	private static VisualElement s_waitingScreen;
 
+	private static Queue<Action> s_asyncOperationQueue = new Queue<Action>();
 	private PathSelection m_bookStyleSelection;
 	private static int s_selectedLibrary;
 	private static bool s_displayingBookStyle;
@@ -94,6 +98,7 @@ public class Displayer : MonoBehaviour
 		s_pathScrollView = s_root.Q<ScrollView>("path-view");
 		s_spellScrollView = s_root.Q<ScrollView>("spell-view");
 
+		s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex));
 		// TODO : GIGA Optimize this
 		for (int l_libraryIndex = 0; l_libraryIndex < m_magicLibraries.m_magicPaths.Length; l_libraryIndex++)
 		{
@@ -119,15 +124,25 @@ public class Displayer : MonoBehaviour
 				VisualElement l_pathIcon = l_pathElement.Q("path-icon");
 				l_pathIcon.style.backgroundImage = new StyleBackground(l_pathGraphics.texture2D);
 
-				s_pathScrollView.Add(l_pathElement);
+
+				int l_index = l_libraryIndex;
+				s_asyncOperationQueue.Enqueue(() =>
+				{
+					l_pathElement.style.display = new StyleEnum<DisplayStyle>(s_selectedLibrary == l_index ? DisplayStyle.Flex : DisplayStyle.None);
+					s_pathScrollView.Add(l_pathElement);
+				});
 
 				PathDisplay l_pathDisplay = new()
 				{
 					m_Path = l_spellPath,
 					m_PathDisplay = l_pathElement,
-					m_SpellDisplays = GenerateSpellDisplays(l_spellPath.spells, l_pathGraphics),
+					m_SpellDisplays = new List<SpellDisplay>(),
 					m_PathGraphics = l_pathGraphics
 				};
+
+				GenerateSpellDisplays(l_pathDisplay,
+					(s_displayingBookStyle && m_bookStyleSelection.m_PathSelection[l_libraryIndex][l_pathIndex]) ||
+					(!s_displayingBookStyle && s_pathSelection.m_PathSelection[l_libraryIndex][l_pathIndex]));
 
 				l_pathElement.AddManipulator(new HoldManipulator(this, m_holdTime, () => DisplayPathInfos(l_pathDisplay)));
 
@@ -157,37 +172,50 @@ public class Displayer : MonoBehaviour
 
 			PathDisplays.Add(l_magicLibrary, l_pathDisplays.ToArray());
 		}
+		s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None));
 	}
 
-	private SpellDisplay[] GenerateSpellDisplays(IReadOnlyList<Spell> p_spellPathSpells, PathGraphics p_pathGraphics)
+	private void GenerateSpellDisplays(PathDisplay p_pathDisplay, bool p_displaySpell)
 	{
-		SpellDisplay[] l_spellDisplays = new SpellDisplay[p_spellPathSpells.Count];
-		// TODO : Optimize this
-		for (int i = 0; i < p_spellPathSpells.Count; i++)
+		SpellDisplay[] l_spellDisplays = new SpellDisplay[p_pathDisplay.m_Path.spells.Length];
+		for (int i = 0; i < p_pathDisplay.m_Path.spells.Length; i++)
 		{
 			// Spell display generation
 			Button l_spellDisplayAsset = m_spellDisplayAsset.CloneTree()[0].Q<Button>();
 
 			// Spell display setup
-			l_spellDisplayAsset.style.borderTopColor = new StyleColor(p_pathGraphics.color);
-			l_spellDisplayAsset.style.borderBottomColor = new StyleColor(p_pathGraphics.color);
-			l_spellDisplayAsset.style.borderLeftColor = new StyleColor(p_pathGraphics.color);
-			l_spellDisplayAsset.style.borderRightColor = new StyleColor(p_pathGraphics.color);
+			l_spellDisplayAsset.style.borderTopColor = new StyleColor(p_pathDisplay.m_PathGraphics.color);
+			l_spellDisplayAsset.style.borderBottomColor = new StyleColor(p_pathDisplay.m_PathGraphics.color);
+			l_spellDisplayAsset.style.borderLeftColor = new StyleColor(p_pathDisplay.m_PathGraphics.color);
+			l_spellDisplayAsset.style.borderRightColor = new StyleColor(p_pathDisplay.m_PathGraphics.color);
 			l_spellDisplayAsset.style.backgroundColor =
-				new StyleColor(Color.Lerp(p_pathGraphics.color, Color.black, 0.16f));
+				new StyleColor(Color.Lerp(p_pathDisplay.m_PathGraphics.color, Color.black, 0.16f));
 
-			l_spellDisplayAsset.Q<Label>("spell-name").text = p_spellPathSpells[i].name;
-			l_spellDisplayAsset.Q<Label>("spell-path").text = p_spellPathSpells[i].pathReference;
-			l_spellDisplayAsset.Q<Label>("spell-level").text = p_spellPathSpells[i].level.ToString();
+			l_spellDisplayAsset.Q<Label>("spell-name").text = p_pathDisplay.m_Path.spells[i].name;
+			l_spellDisplayAsset.Q<Label>("spell-path").text = p_pathDisplay.m_Path.spells[i].pathReference;
+			l_spellDisplayAsset.Q<Label>("spell-level").text = p_pathDisplay.m_Path.spells[i].level.ToString();
 
-			SpellDisplay l_spellDisplay = new SpellDisplay {m_Spell = p_spellPathSpells[i], m_VisualElement = l_spellDisplayAsset, m_PathGraphics = p_pathGraphics};
-			l_spellDisplays[i] = l_spellDisplay;
+			SpellDisplay l_spellDisplay = new SpellDisplay
+			{
+				m_Spell = p_pathDisplay.m_Path.spells[i],
+				m_VisualElement = l_spellDisplayAsset,
+				m_PathGraphics = p_pathDisplay.m_PathGraphics
+			};
+
 			l_spellDisplayAsset.Q<Button>().clickable.clicked += () => OnSpellClicked(l_spellDisplay);
 
-			s_spellScrollView.Add(l_spellDisplayAsset);
-		}
+			l_spellDisplays[i] = l_spellDisplay;
 
-		return l_spellDisplays;
+			s_asyncOperationQueue.Enqueue(() =>
+			{
+				s_spellScrollView.Add(l_spellDisplayAsset);
+				l_spellDisplayAsset.style.display = new StyleEnum<DisplayStyle>(p_displaySpell
+					? DisplayStyle.Flex
+					: DisplayStyle.None);
+			});
+
+		}
+		p_pathDisplay.m_SpellDisplays = l_spellDisplays.ToList();
 	}
 
 	private void LoadPlayerPrefs()
@@ -228,6 +256,8 @@ public class Displayer : MonoBehaviour
 		s_spellInfoNewSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		s_spellInfoOldSystemWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 		s_spellLevelInfoWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+
+		s_waitingScreen = s_root.Q<VisualElement>("waiting-screen");
 	}
 
 	private void PrepareOptionButtons()
@@ -269,8 +299,7 @@ public class Displayer : MonoBehaviour
 				PathDisplay[] l_pathDisplays = PathDisplays.ElementAt(i).Value;
 				for (int j = 0; j < l_pathDisplays.Length; j++)
 				{
-					Toggle l_toggle = l_pathDisplays[j].m_PathDisplay.Q<Toggle>();
-					l_toggle.SetValueWithoutNotify(s_pathSelection.m_PathSelection[i][j]);
+					l_pathDisplays[j].m_PathDisplay.SetValueWithoutNotify(s_pathSelection.m_PathSelection[i][j]);
 				}
 			}
 
@@ -331,17 +360,23 @@ public class Displayer : MonoBehaviour
 
 	private static void ToggleAllPaths(bool p_displayEverything)
 	{
-		// TODO : Optimize this
+		// s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex));
 		PathDisplay[] pathDisplays = PathDisplays.ElementAt(s_selectedLibrary).Value;
 		for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
         {
 			PathDisplay pathDisplay = pathDisplays[pathIndex];
 			bool pathDisplaying = s_pathSelection.m_PathSelection[s_selectedLibrary][pathIndex];
-			for (int spellIndex = 0; spellIndex < pathDisplay.m_SpellDisplays.Length; spellIndex++)
+			for (int spellIndex = 0; spellIndex < pathDisplay.m_SpellDisplays.Count; spellIndex++)
 			{
-				pathDisplay.m_SpellDisplays[spellIndex].m_VisualElement.style.display = new StyleEnum<DisplayStyle>(p_displayEverything || pathDisplaying ? DisplayStyle.Flex : DisplayStyle.None);
+				int l_index = spellIndex;
+				s_asyncOperationQueue.Enqueue(() =>
+					pathDisplay.m_SpellDisplays[l_index].m_VisualElement.style.display =
+						new StyleEnum<DisplayStyle>(p_displayEverything || pathDisplaying
+							? DisplayStyle.Flex
+							: DisplayStyle.None));
 			}
         }
+		// s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None));
     }
 
 	private static void OnSpellClicked(SpellDisplay p_spell)
@@ -537,23 +572,33 @@ public class Displayer : MonoBehaviour
 
 	public void SelectLibrary(int p_libraryIndex)
 	{
-		// TODO : Optimize this
+		s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex));
 		MagicLibrary l_selectedLibrary = m_magicLibraries.m_magicPaths[p_libraryIndex];
-		for (int i = 0; i < PathDisplays.Count; i++)
+		for (int i = PathDisplays.Count - 1; i >= 0; i--)
 		{
 			KeyValuePair<MagicLibrary, PathDisplay[]> l_keyValuePair = PathDisplays.ElementAt(i);
 			bool l_isSelected = l_keyValuePair.Key == l_selectedLibrary;
-			for (int j = 0; j < l_keyValuePair.Value.Length; j++)
+			for (int j = l_keyValuePair.Value.Length - 1; j >= 0; j--)
 			{
 				PathDisplay l_pathDisplay = l_keyValuePair.Value[j];
-				l_pathDisplay.m_PathDisplay.style.display = new StyleEnum<DisplayStyle>(l_isSelected ? DisplayStyle.Flex : DisplayStyle.None);
+				s_asyncOperationQueue.Enqueue(() =>
+					l_pathDisplay.m_PathDisplay.style.display =
+						new StyleEnum<DisplayStyle>(l_isSelected ? DisplayStyle.Flex : DisplayStyle.None));
+			}
+
+			for (int j = l_keyValuePair.Value.Length - 1; j >= 0; j--)
+			{
+				PathDisplay l_pathDisplay = l_keyValuePair.Value[j];
 				bool isOn = s_pathSelection.m_PathSelection[i][j] || s_pathSelection.m_PathSelection[i].All(p_element => p_element == false);
 				foreach (SpellDisplay l_spellDisplay in l_pathDisplay.m_SpellDisplays)
-                {
-                    l_spellDisplay.m_VisualElement.style.display = new StyleEnum<DisplayStyle>(l_isSelected && isOn ? DisplayStyle.Flex : DisplayStyle.None);
-                }
+				{
+					s_asyncOperationQueue.Enqueue(() =>
+						l_spellDisplay.m_VisualElement.style.display =
+							new StyleEnum<DisplayStyle>(l_isSelected && isOn ? DisplayStyle.Flex : DisplayStyle.None));
+				}
             }
 		}
+		s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None));
 	}
 
 	private void Update()
@@ -561,6 +606,12 @@ public class Displayer : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			BackButtonPressed();
+		}
+
+		for (int i = 0; i < Math.Min(m_asyncOperationBufferSize, s_asyncOperationQueue.Count); i++)
+		{
+			if (s_asyncOperationQueue.TryDequeue(out Action l_action))
+				l_action?.Invoke();
 		}
 	}
 
