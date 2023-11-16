@@ -517,7 +517,7 @@ public class Displayer : MonoBehaviour
 		l_label.text = "<b>Effet : </b>"+ l_spell.oldSystem.effect;
 
 		l_label = l_spellDisplayOld.Q<Label>("spell-additional-effect");
-		l_label.text = l_spell.oldSystem.additionalEffect;
+		l_label.text = "<b>Effet supplémentaire : </b>" + l_spell.oldSystem.additionalEffect;
 
 		l_label = l_spellDisplayOld.Q<Label>("spell-max-cost");
 		l_label.text = "Intelligence x " + l_spell.oldSystem.maxCost;
