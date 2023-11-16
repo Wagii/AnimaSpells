@@ -1,5 +1,5 @@
 .rank-label {
-    font-size: 16px;
+    font-size: 18px;
     padding: 4px 2px 4px 1px;
     margin-top: initial;
     margin-bottom: initial;
@@ -22,7 +22,7 @@
 .spell-rank > Label {
     -unity-text-align: upper-center;
     color: white;
-    font-size: 12px;
+    font-size: 18px;
     -unity-font-style: bold;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;

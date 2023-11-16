@@ -4,11 +4,11 @@
 
 .unity-label {
 	color: white;
-	font-size: 16px;
+	font-size: 18px;
 }
 
 .title {
-	font-size: 18px;
+	font-size: 20px;
 	-unity-font-style: bold;
 }
 

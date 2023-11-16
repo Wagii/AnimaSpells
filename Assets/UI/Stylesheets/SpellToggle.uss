@@ -1,5 +1,5 @@
 Label {
-    font-size: 16px;
+    font-size: 18px;
     color: white;
     -unity-font-style: bold;
     -unity-text-align: middle-center;

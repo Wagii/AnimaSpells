@@ -7,7 +7,7 @@
     <ui:VisualElement class="background" style="flex-grow: 1;">
         <ui:VisualElement style="flex-direction: column; gap: 8px; border-bottom-width: 4px; border-left-color: rgb(192, 192, 192); border-right-color: rgb(192, 192, 192); border-top-color: rgb(192, 192, 192); border-bottom-color: rgb(192, 192, 192); align-items: flex-end;">
             <ui:VisualElement style="padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; flex-grow: 1; flex-direction: row-reverse;">
-                <ui:VisualElement style="flex-grow: 0; flex-direction: column; align-items: flex-end; justify-content: flex-start; border-right-width: 2px; border-left-color: rgba(0, 0, 0, 0.1); border-right-color: rgba(0, 0, 0, 0.1); border-top-color: rgba(0, 0, 0, 0.1); border-bottom-color: rgba(0, 0, 0, 0.1); margin-left: 6px;">
+                <ui:VisualElement style="flex-grow: 0; flex-direction: column; align-items: flex-end; justify-content: flex-start; margin-left: 6px;">
                     <ui:VisualElement style="flex-grow: 1;">
                         <SlideToggle label="Book mode" value="false" name="book-toggle" style="padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 4px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 18px; border-right-width: 0;" />
                     </ui:VisualElement>
@@ -15,7 +15,7 @@
                         <SlideToggle label="Nouveau système" name="system-toggle" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; font-size: 18px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement style="flex-grow: 1; flex-direction: column; justify-content: flex-start; align-items: flex-end;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: column; justify-content: flex-start; align-items: flex-end; border-left-color: rgba(0, 0, 0, 0.1); border-right-color: rgba(0, 0, 0, 0.1); border-top-color: rgba(0, 0, 0, 0.1); border-bottom-color: rgba(0, 0, 0, 0.1); border-right-width: 2px;">
                     <ui:VisualElement style="flex-grow: 1; padding-right: 4px;">
                         <SlideToggle label="Dark theme" value="false" name="theme-toggle" style="flex-shrink: 0; flex-grow: 0; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 4px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 18px; border-right-width: 0;" />
                     </ui:VisualElement>
