@@ -362,11 +362,11 @@ public class Displayer : MonoBehaviour
 	{
 		// s_asyncOperationQueue.Enqueue(() => s_waitingScreen.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex));
 		PathDisplay[] pathDisplays = PathDisplays.ElementAt(s_selectedLibrary).Value;
-		for (int pathIndex = 0; pathIndex < pathDisplays.Length; pathIndex++)
+		for (int pathIndex = pathDisplays.Length - 1; pathIndex >= 0; pathIndex--)
         {
 			PathDisplay pathDisplay = pathDisplays[pathIndex];
 			bool pathDisplaying = s_pathSelection.m_PathSelection[s_selectedLibrary][pathIndex];
-			for (int spellIndex = 0; spellIndex < pathDisplay.m_SpellDisplays.Count; spellIndex++)
+			for (int spellIndex = pathDisplay.m_SpellDisplays.Count - 1; spellIndex >= 0; spellIndex--)
 			{
 				int l_index = spellIndex;
 				s_asyncOperationQueue.Enqueue(() =>
@@ -556,7 +556,9 @@ public class Displayer : MonoBehaviour
 		l_label.text = l_path.name;
 
 		l_label = s_pathInfoWindow.Q<Label>("path-opposed");
-		l_label.text = l_path.OpposedPath.Length == 0 ? "" : "<b>Voies opposées : </b>" + string.Join(", ", l_path.OpposedPath.Select(p_path => p_path.name));
+		l_label.style.display = new StyleEnum<DisplayStyle>(l_path.opposedPaths?.Length > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+		if (l_path.opposedPaths?.Length > 0)
+			l_label.text = "<b>Voies opposées : </b>" + string.Join(", ", l_path.opposedPaths);
 
 		l_label = s_pathInfoWindow.Q<Label>("path-type");
 		l_label.text = "<b>Type : </b>" + l_path.pathType;
@@ -566,8 +568,8 @@ public class Displayer : MonoBehaviour
 
 		VisualElement l_pathSpellHolder = s_pathInfoWindow.Q<VisualElement>("path-spells");
 		l_pathSpellHolder.Clear();
-		foreach (Spell l_spell in l_path.spells)
-			l_pathSpellHolder.Add(new Label(l_spell.name));
+		foreach (Spell spell in l_path.spells)
+			l_pathSpellHolder.Add(new Label(spell.name + " "));
 	}
 
 	public void SelectLibrary(int p_libraryIndex)

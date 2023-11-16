@@ -33769,15 +33769,15 @@ MonoBehaviour:
             \xE0 son total de comp\xE9tences d'attaque et d\xE9fense. La cible gagne
             \xE9galement 1 point de Pouvoir pour le tableau d'apprentissage des pouvoirs
             d'Artefact pour chaque 50 Niveaux de Magie obtenus par ce sort. Il est
-            important de pr\xE9ciser que ces points ne sont pas \\\" r\xE9els \\\",
-            ils permettent uniquement d'augmenter le niveau d'apprentissage de la
-            cible sur les tableaux d'apprentissage. A la place d'augmenter ses rangs
-            d'apprentissage, la cible peut r\xE9duire la Complexit\xE9 d'apprentissage.
-            Pour chaque 100 Niveaux de Magie que la cible devrait normalement obtenir
-            par ce sort elle r\xE9duit d'un cran la complexit\xE9 d'apprentissage
-            dans tous les tableaux. Elle pourra par exemple apprendre un sortil\xE8ge
-            en baissant d'un niveau sa complexit\xE9 d'apprentissage au lieu de monter
-            au rang d'apprentissage suivant."
+            important de pr\xE9ciser que ces points ne sont pas \"r\xE9els\", ils
+            permettent uniquement d'augmenter le niveau d'apprentissage de la cible
+            sur les tableaux d'apprentissage. A la place d'augmenter ses rangs d'apprentissage,
+            la cible peut r\xE9duire la Complexit\xE9 d'apprentissage. Pour chaque
+            100 Niveaux de Magie que la cible devrait normalement obtenir par ce
+            sort elle r\xE9duit d'un cran la complexit\xE9 d'apprentissage dans tous
+            les tableaux. Elle pourra par exemple apprendre un sortil\xE8ge en baissant
+            d'un niveau sa complexit\xE9 d'apprentissage au lieu de monter au rang
+            d'apprentissage suivant."
           additionalEffect: "+5 Niveaux de Magie et +10 DI et + 15 au total d'Attaque
             + D\xE9fense et +1 en Pouvoir"
           maxCost: 20
@@ -73846,15 +73846,15 @@ MonoBehaviour:
             \xE0 son total de comp\xE9tences d'attaque et d\xE9fense. La cible gagne
             \xE9galement 1 point de Pouvoir pour le tableau d'apprentissage des pouvoirs
             d'Artefact pour chaque 50 Niveaux de Magie obtenus par ce sort. Il est
-            important de pr\xE9ciser que ces points ne sont pas \\\" r\xE9els \\\",
-            ils permettent uniquement d'augmenter le niveau d'apprentissage de la
-            cible sur les tableaux d'apprentissage. A la place d'augmenter ses rangs
-            d'apprentissage, la cible peut r\xE9duire la Complexit\xE9 d'apprentissage.
-            Pour chaque 100 Niveaux de Magie que la cible devrait normalement obtenir
-            par ce sort elle r\xE9duit d'un cran la complexit\xE9 d'apprentissage
-            dans tous les tableaux. Elle pourra par exemple apprendre un sortil\xE8ge
-            en baissant d'un niveau sa complexit\xE9 d'apprentissage au lieu de monter
-            au rang d'apprentissage suivant."
+            important de pr\xE9ciser que ces points ne sont pas \"r\xE9els\", ils
+            permettent uniquement d'augmenter le niveau d'apprentissage de la cible
+            sur les tableaux d'apprentissage. A la place d'augmenter ses rangs d'apprentissage,
+            la cible peut r\xE9duire la Complexit\xE9 d'apprentissage. Pour chaque
+            100 Niveaux de Magie que la cible devrait normalement obtenir par ce
+            sort elle r\xE9duit d'un cran la complexit\xE9 d'apprentissage dans tous
+            les tableaux. Elle pourra par exemple apprendre un sortil\xE8ge en baissant
+            d'un niveau sa complexit\xE9 d'apprentissage au lieu de monter au rang
+            d'apprentissage suivant."
           additionalEffect: "+5 Niveaux de Magie et +10 DI et + 15 au total d'Attaque
             + D\xE9fense et +1 en Pouvoir"
           maxCost: 20
